@@ -9,9 +9,9 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #4A5568 0%, #718096 100%);
-            padding: 10px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #6B6B6B;
+            padding: 8px;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -19,373 +19,172 @@
             width: 100%;
             max-width: 100%;
             margin: 0 auto;
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            background: #5A5A5A;
+            padding: 12px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
-        h1 { text-align: center; color: #333; margin-bottom: 12px; font-size: 1.5em; }
-        
-        .main-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 10px;
-        }
-        .main-tab {
-            flex: 1;
-            padding: 12px 20px;
-            background: #f8f9fa;
-            border: 2px solid #dee2e6;
-            border-radius: 8px 8px 0 0;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            text-align: center;
-            transition: all 0.3s;
-            color: #666;
-        }
-        .main-tab:hover { background: #e9ecef; }
-        .main-tab.active {
-            background: linear-gradient(135deg, #2D3748 0%, #4A5568 100%);
-            color: white;
-            border-color: #2D3748;
-        }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        h1 { text-align: center; color: #F0F0F0; margin-bottom: 10px; font-size: 1.3em; }
         
         .status-bar {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 12px;
+            background: #4A4A4A;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: flex-end;
             align-items: center;
             flex-wrap: wrap;
-            gap: 6px;
-        }
-        .status-dot {
-            width: 12px; height: 12px; border-radius: 50%;
-            background: #ffc107; animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .status-dot.success { background: #28a745; animation: none; }
-        .status-dot.error { background: #dc3545; animation: none; }
-        
-        button {
-            padding: 6px 12px; border: none; border-radius: 6px;
-            cursor: pointer; font-size: 12px; font-weight: 600;
-            transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            touch-action: manipulation;
-        }
-        button:active { transform: scale(0.95); }
-        button:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        
-        .btn-lang, .btn-success, .btn-download {
-            background: linear-gradient(135deg, #2D3748 0%, #4A5568 100%);
-            color: white;
-            border: 2px solid #718096;
-        }
-        .btn-lang:hover, .btn-success:hover, .btn-download:hover {
-            border-color: #4A5568;
-            background: linear-gradient(135deg, #4A5568 0%, #2D3748 100%);
-        }
-        .btn-lang.active {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: #333;
-            border-color: #FFD700;
-        }
-        
-        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-        .btn-warning { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
-        .btn-secondary { background: #6c757d; color: white; }
-        .btn-gold { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: white; }
-        .btn-expand { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; }
-        .btn-collapse { background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); color: white; }
-        .btn-table { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
-        
-        .guild-selector {
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .guild-selector select {
-            padding: 10px 15px;
-            font-size: 14px;
-            border: 2px solid #718096;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            width: 100%;
-            max-width: 300px;
-        }
-        
-        .guild-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        .guild-button {
-            padding: 15px 20px;
-            background: linear-gradient(135deg, #2D3748 0%, #4A5568 100%);
-            color: white;
-            border: 2px solid #718096;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            text-align: center;
-            transition: all 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .guild-button:hover {
-            border-color: #4A5568;
-            background: linear-gradient(135deg, #4A5568 0%, #2D3748 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        .guild-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .location-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 2000;
-            overflow: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        .location-modal.show { display: block; }
-        .location-content {
-            background: white;
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 12px;
-            max-width: 95%;
-            max-height: 90vh;
-            overflow: auto;
-        }
-        .location-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e9ecef;
-        }
-        .location-header h3 {
-            font-size: 1.3em;
-            color: #333;
-        }
-        .location-players {
-            display: grid;
             gap: 4px;
         }
-        .location-player-wrapper {
-            margin-bottom: 4px;
+        .status-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: #FF8C42; animation: pulse 2s infinite;
         }
-        .location-player {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #4A5568;
-            cursor: pointer;
-            user-select: none;
-            transition: background 0.2s;
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .status-dot.success { background: #4CAF50; animation: none; }
+        .status-dot.error { background: #F44336; animation: none; }
+        
+        button {
+            padding: 6px 10px; border: none; border-radius: 5px;
+            cursor: pointer; font-size: 11px; font-weight: 600;
+            transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            touch-action: manipulation;
+            background: #7A7A7A;
+            color: #F0F0F0;
         }
-        .location-player:hover {
-            background: #e9ecef;
-        }
-        .location-player.expanded {
-            border-radius: 8px 8px 0 0;
-            background: #e9ecef;
-        }
-        .location-player-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .player-toggle-icon {
-            display: inline-block;
-            font-size: 10px;
-            transition: transform 0.2s;
-            color: #666;
-        }
-        .player-toggle-icon.rotated {
-            transform: rotate(90deg);
-        }
-        .location-player-power {
-            font-weight: 700;
-            color: #2D3748;
-            font-size: 14px;
-        }
-        .location-player-details {
-            display: none;
-            background: #f8f9fa;
-            border-left: 4px solid #718096;
-            border-radius: 0 0 8px 8px;
-            padding: 10px 15px;
-            margin-top: -4px;
-        }
-        .location-player-details.show {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-        }
-        .location-detail-row {
-            display: inline-block;
-            padding: 6px 12px;
-            font-size: 13px;
-            color: #555;
-            background: white;
-            border-radius: 4px;
-            border: 1px solid #e9ecef;
-            line-height: 1.4;
+        button:active { transform: scale(0.95); }
+        button:hover { background: #8A8A8A; }
+        button.active {
+            background: linear-gradient(135deg, #FF8C42 0%, #FF6B35 100%);
+            color: white;
         }
         
+        .btn-lang { background: #7A7A7A; color: #F0F0F0; }
+        .btn-lang:hover { background: #8A8A8A; }
+        .btn-lang.active { background: linear-gradient(135deg, #FF8C42 0%, #FF6B35 100%); color: white; }
+        
+        .btn-success { background: #7A7A7A; color: #F0F0F0; }
+        .btn-success:hover { background: #8A8A8A; }
+        
+        .btn-download { background: #7A7A7A; color: #F0F0F0; }
+        .btn-download:hover { background: #8A8A8A; }
+        
         .leaders-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 2px solid #dee2e6;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: #4A4A4A;
+            border: 2px solid #5A5A5A;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 12px;
         }
         .leaders-title-main {
-            font-size: 1.2em;
-            font-weight: 700;
-            margin-bottom: 12px;
-            text-align: center;
-            color: #333;
-            background: linear-gradient(135deg, #2D3748 0%, #4A5568 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .leaders-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-        .leaders-column {
-            background: white;
-            border-radius: 10px;
-            padding: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
-        .column-title {
-            font-size: 1em;
+            font-size: 1.1em;
             font-weight: 700;
             margin-bottom: 10px;
             text-align: center;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e9ecef;
+            color: #F0F0F0;
         }
-        .column-title.breakthrough { color: #0066cc; border-bottom-color: #4facfe; }
-        .column-title.titans { color: #9933cc; border-bottom-color: #9933cc; }
+        .leaders-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .leaders-column {
+            background: #3A3A3A;
+            border-radius: 8px;
+            padding: 8px;
+        }
+        .column-title {
+            font-size: 0.9em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #5A5A5A;
+        }
+        .column-title.breakthrough { color: #FF8C42; }
+        .column-title.titans { color: #FF6B35; }
         
         .leader-card {
             display: flex;
             align-items: center;
-            padding: 10px;
-            margin-bottom: 8px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: all 0.3s;
+            padding: 8px;
+            margin-bottom: 6px;
+            background: #3A3A3A;
+            border-radius: 6px;
             cursor: pointer;
-            border-left: 4px solid transparent;
-            min-height: 60px;
+            border-left: 3px solid transparent;
         }
         .leader-card:active { transform: scale(0.98); }
-        .leader-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .leader-card.medal-gold {
-            background: linear-gradient(135deg, #fff9e6 0%, #ffe680 100%);
-            border-left-color: #FFD700;
-        }
-        .leader-card.medal-silver {
-            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-            border-left-color: #C0C0C0;
-        }
-        .leader-card.medal-bronze {
-            background: linear-gradient(135deg, #fff4e6 0%, #ffd9b3 100%);
-            border-left-color: #CD7F32;
-        }
+        .leader-card.medal-gold { background: #3A3A3A; border-left-color: #FFD700; }
+        .leader-card.medal-silver { background: #3A3A3A; border-left-color: #C0C0C0; }
+        .leader-card.medal-bronze { background: #3A3A3A; border-left-color: #CD7F32; }
         
-        .leader-info { flex: 1; }
-        .leader-name { font-size: 0.95em; font-weight: 700; color: #333; margin-bottom: 2px; }
-        .leader-stats { font-size: 0.8em; color: #666; }
-        .leader-value { font-size: 1em; font-weight: 700; color: #333; text-align: right; min-width: 90px; }
-        .leader-growth { color: #28a745; font-weight: 600; font-size: 0.85em; }
-        .leader-growth.negative { color: #dc3545; }
-        .color-indicator { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; border: 2px solid #333; }
+        .color-indicator { width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; border: 1px solid #F0F0F0; flex-shrink: 0; }
+        .leader-info { flex: 1; min-width: 0; }
+        .leader-name { font-size: 0.85em; font-weight: 700; color: #F0F0F0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .leader-stats { font-size: 0.7em; color: #B0B0B0; }
+        .leader-value { font-size: 0.9em; font-weight: 700; color: #F0F0F0; text-align: right; min-width: 70px; flex-shrink: 0; }
         
-        .controls { background: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
-        .filter-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 10px; }
-        .filter-buttons button { width: 100%; }
+        .controls { background: #4A4A4A; padding: 8px; border-radius: 6px; margin-bottom: 10px; }
+        .filter-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; margin-bottom: 8px; }
         .checkbox-group {
             display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 6px; max-height: 200px; overflow-y: auto; padding: 8px;
-            background: white; border-radius: 6px; border: 2px solid #e9ecef;
+            gap: 4px; max-height: 150px; overflow-y: auto; padding: 6px;
+            background: #3A3A3A; border-radius: 5px; border: 1px solid #5A5A5A;
         }
         .checkbox-item {
-            display: flex; align-items: center; gap: 4px;
-            cursor: pointer; padding: 6px; border-radius: 4px; transition: all 0.2s;
-            font-size: 0.9em;
+            display: flex; align-items: center; gap: 3px;
+            cursor: pointer; padding: 4px; border-radius: 3px;
+            font-size: 0.8em;
         }
-        .checkbox-item:active { background: #e6f7ff; }
-        .checkbox-item.leader-item { background: #fff9e6; font-weight: 600; }
-        .checkbox-item input[type="checkbox"] { margin-right: 4px; width: 16px; height: 16px; cursor: pointer; }
-        .color-box { display: inline-block; width: 14px; height: 14px; margin-right: 4px; border-radius: 3px; border: 1px solid #333; flex-shrink: 0; }
+        .checkbox-item.leader-item { background: #4A4A4A; font-weight: 600; }
+        .checkbox-item input[type="checkbox"] { margin-right: 3px; width: 14px; height: 14px; cursor: pointer; }
+        .color-box { display: inline-block; width: 12px; height: 12px; margin-right: 3px; border-radius: 2px; border: 1px solid #F0F0F0; flex-shrink: 0; }
         
         .expand-btn {
-            padding: 2px 6px; font-size: 11px; cursor: pointer;
-            border: 1px solid #ddd; border-radius: 4px; background: #f5f5f5;
-            transition: all 0.2s; flex-shrink: 0;
+            padding: 2px 5px; font-size: 10px; cursor: pointer;
+            border: 1px solid #5A5A5A; border-radius: 3px; background: #7A7A7A;
+            color: #F0F0F0;
         }
-        .expand-btn:active { transform: scale(0.9); }
-        .expand-btn.expanded { background: #e6f7ff; border-color: #4facfe; }
+        .expand-btn:hover { background: #8A8A8A; }
+        .expand-btn.active, .expand-btn.expanded { background: linear-gradient(135deg, #FF8C42 0%, #FF6B35 100%); color: white; border-color: #FF8C42; }
         
         .graph-section {
-            width: 100%; margin-bottom: 15px;
-            background: white; border-radius: 10px; padding: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%; margin-bottom: 12px;
+            background: #4A4A4A;
+            border-radius: 8px; padding: 8px;
         }
         .graph-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 10px; flex-wrap: wrap; gap: 8px;
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 8px;
+            position: relative;
         }
-        .graph-title { font-size: 1.1em; font-weight: 700; color: #333; }
+        .graph-title { 
+            font-size: 0.95em; 
+            font-weight: 700; 
+            color: #F0F0F0;
+            text-align: center;
+            flex: 1;
+        }
+        .graph-header .btn-download {
+            position: absolute;
+            right: 0;
+        }
         
-        #plotDivTeams, #plotDivTitans { width: 100% !important; height: 350px; }
+        #plotDivTeams, #plotDivTitans { 
+            width: 100% !important; 
+            height: 300px; 
+            background: #4A4A4A;
+        }
         
         .stats {
-            background: linear-gradient(135deg, #2D3748 0%, #4A5568 100%);
-            color: white; padding: 10px; border-radius: 6px;
-            margin-top: 10px; font-weight: 600; text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            font-size: 0.85em;
+            background: #4A4A4A;
+            color: #F0F0F0; padding: 8px; border-radius: 5px;
+            font-weight: 600; text-align: center;
+            font-size: 0.75em;
         }
         
         .error-box {
-            background: #f8d7da; color: #721c24; padding: 10px;
-            border-radius: 6px; margin: 10px 0; border-left: 4px solid #dc3545;
-            font-size: 0.9em;
+            background: #FFEBEE; color: #C62828; padding: 8px;
+            border-radius: 5px; margin: 8px 0; border-left: 3px solid #F44336;
+            font-size: 0.85em;
         }
         
         .table-modal {
@@ -400,10 +199,10 @@
         }
         .table-modal.show { display: block; }
         .table-content {
-            background: white;
+            background: #5A5A5A;
             margin: 5px;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 6px;
             max-width: 100%;
             max-height: 95vh;
             overflow: auto;
@@ -412,113 +211,106 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-            gap: 8px;
+            margin-bottom: 8px;
         }
-        .table-header h2 { font-size: 1.1em; margin: 0; }
+        .table-header h2 { font-size: 1em; margin: 0; color: #F0F0F0; }
         .table-controls {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-            padding: 8px;
-            background: #f8f9fa;
-            border-radius: 6px;
+            gap: 6px;
+            margin-bottom: 8px;
         }
-        .table-controls button { flex: 1; min-width: 120px; }
+        .table-controls button { flex: 1; min-width: 100px; }
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid #5A5A5A;
+            border-radius: 5px;
+            background: #4A4A4A;
+        }
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 10px;
+            font-size: 9px;
+            min-width: 600px;
+            background: #4A4A4A;
+            color: #F0F0F0;
         }
         .data-table th, .data-table td {
-            border: 1px solid #ddd;
-            padding: 4px 6px;
+            border: 1px solid #5A5A5A;
+            padding: 3px 4px;
             text-align: right;
             white-space: nowrap;
         }
         .data-table th {
-            background: #4A5568;
-            color: white;
+            background: #3A3A3A;
+            color: #F0F0F0;
             font-weight: 600;
             position: sticky;
             top: 0;
             z-index: 10;
             cursor: pointer;
-            user-select: none;
         }
-        .data-table th:active { background: #5a6578; }
-        .data-table th.sortable::after { content: ' ↕'; font-size: 8px; opacity: 0.6; }
+        .data-table th.sortable::after { content: ' '; font-size: 7px; opacity: 0.6; }
         .data-table th.sort-asc::after { content: ' ↑'; opacity: 1; }
         .data-table th.sort-desc::after { content: ' ↓'; opacity: 1; }
         .data-table td:first-child, .data-table th:first-child {
             text-align: left;
             position: sticky;
             left: 0;
-            background: white;
+            background: #4A4A4A;
             z-index: 5;
             font-weight: 600;
-            min-width: 100px;
-            max-width: 130px;
+            min-width: 80px;
+            max-width: 100px;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .data-table th:first-child { background: #4A5568; z-index: 20; }
-        .data-table tr:nth-child(even) { background: #f9f9f9; }
-        .data-table tr:active { background: #e6f7ff; }
+        .data-table th:first-child { background: #3A3A3A; z-index: 20; }
+        .data-table tr:nth-child(even) { background: #3A3A3A; }
+        .data-table tr:hover { background: #4A4A4A; }
         .data-table .player-row { cursor: pointer; }
-        .data-table .player-row.expanded { background: #dbeafe !important; }
-        .data-table .detail-row { background: #f3f4f6 !important; }
-        .data-table .detail-row:active { background: #e5e7eb !important; }
-        .data-table .detail-row td { font-size: 9px; color: #555; padding: 3px 6px; }
-        .data-table .detail-row td:first-child { padding-left: 20px; font-weight: 600; color: #374151; }
-        .data-table .detail-row td.empty-cell { background: #f3f4f6 !important; }
-        .col-weekly { background: #d1fae5 !important; font-weight: 600; }
-        .col-total { background: #fef08a !important; font-weight: 600; }
-        .positive { color: #059669; }
-        .negative { color: #dc2626; }
-        .expand-icon { margin-right: 4px; display: inline-block; transition: transform 0.2s; font-size: 9px; }
+        .data-table .player-row.expanded { background: #5A4A3A !important; }
+        .data-table .detail-row { background: #3A3A3A !important; }
+        .data-table .detail-row td { font-size: 8px; color: #B0B0B0; padding: 2px 4px; }
+        .data-table .detail-row td:first-child { padding-left: 15px; font-weight: 600; color: #F0F0F0; }
+        .col-weekly { background: #2D4A2D !important; font-weight: 600; color: #4CAF50; }
+        .col-total { background: #4A3A2D !important; font-weight: 600; color: #FF8C42; }
+        .positive { color: #4CAF50; }
+        .negative { color: #F44336; }
+        .expand-icon { margin-right: 3px; display: inline-block; transition: transform 0.2s; font-size: 8px; color: #F0F0F0; }
         .expand-icon.rotated { transform: rotate(90deg); }
         .rank-badge {
             display: inline-block;
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
-            background: #4A5568;
-            color: white;
+            background: #4A4A4A;
+            color: #F0F0F0;
             text-align: center;
-            line-height: 20px;
-            font-size: 10px;
+            line-height: 16px;
+            font-size: 8px;
             font-weight: 700;
-            margin-right: 6px;
+            margin-right: 4px;
         }
         .rank-1 { background: #FFD700; color: #333; }
         .rank-2 { background: #C0C0C0; color: #333; }
         .rank-3 { background: #CD7F32; color: white; }
-        .sparkline { display: inline-block; width: 50px; height: 18px; vertical-align: middle; margin-left: 4px; }
-        .percentage { font-size: 8px; color: #666; margin-left: 2px; display: block; }
+        .percentage { font-size: 7px; color: #B0B0B0; display: block; }
         
-        @media (min-width: 769px) {
+        @media (min-width: 768px) {
             body { padding: 20px; }
-            .container { padding: 30px; }
-            h1 { font-size: 2em; margin-bottom: 20px; }
+            .container { padding: 20px; max-width: 1200px; }
+            h1 { font-size: 1.8em; margin-bottom: 15px; }
             .leaders-grid { grid-template-columns: 1fr 1fr; }
-            .leader-card { min-height: 70px; padding: 12px 15px; }
-            .leader-name { font-size: 1.1em; }
-            .leader-value { font-size: 1.2em; min-width: 120px; }
-            .filter-buttons { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-            .checkbox-group { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); max-height: 300px; }
-            #plotDivTeams, #plotDivTitans { height: 600px; }
-            .data-table { font-size: 12px; }
-            .data-table th, .data-table td { padding: 6px 8px; }
-            .data-table .detail-row td { font-size: 11px; }
-            .sparkline { width: 80px; height: 24px; }
-            .percentage { font-size: 10px; display: inline; }
-            .guild-buttons { max-width: 500px; }
-            .guild-button { font-size: 16px; padding: 18px 24px; }
-            .location-content { max-width: 600px; }
-            .location-player-name, .location-player-power { font-size: 16px; }
+            .leader-card { padding: 10px; }
+            .leader-name { font-size: 0.95em; }
+            .leader-value { font-size: 1em; min-width: 90px; }
+            .filter-buttons { grid-template-columns: repeat(4, 1fr); }
+            .checkbox-group { grid-template-columns: repeat(3, 1fr); max-height: 250px; }
+            #plotDivTeams, #plotDivTitans { height: 500px; }
+            .data-table { font-size: 11px; }
+            .data-table th, .data-table td { padding: 5px 6px; }
+            .percentage { font-size: 9px; display: inline; }
         }
     </style>
 </head>
@@ -526,105 +318,59 @@
     <div class="container">
         <h1>Избранные</h1>
         
-        <div class="main-tabs">
-            <div class="main-tab active" onclick="switchMainTab('favorites', this)">Избранные</div>
-            <div class="main-tab" onclick="switchMainTab('guild', this)">Война Гильдий</div>
+        <div class="status-bar">
+            <div class="status-dot" id="statusDot"></div>
+            <button class="btn-lang active" id="langRu" onclick="setLanguage('ru')">RU</button>
+            <button class="btn-lang" id="langEn" onclick="setLanguage('en')">EN</button>
+            <button class="btn-success" onclick="loadData(true)">Обновить</button>
+            <span id="lastUpdate" style="font-size: 10px; color: #B0B0B0;"></span>
         </div>
         
-        <div id="tab-favorites" class="tab-content active">
-            <div class="status-bar">
-                <div class="status-dot" id="statusDot"></div>
-                <button class="btn-lang" id="langRu" onclick="setLanguage('ru')">RU</button>
-                <button class="btn-lang" id="langEn" onclick="setLanguage('en')">EN</button>
-                <button class="btn-success" onclick="loadData(true)">Обновить</button>
-                <span id="lastUpdate" style="font-size: 11px; color: #666;"></span>
-            </div>
-            
-            <div id="messageArea"></div>
-            
-            <div class="leaders-section" id="leadersSection" style="display: none;">
-                <div class="leaders-title-main">Топ игроков недели</div>
-                <div class="leaders-grid">
-                    <div class="leaders-column">
-                        <div class="column-title breakthrough">Героический прорыв недели</div>
-                        <div id="topGrowthLeaders"></div>
-                    </div>
-                    <div class="leaders-column">
-                        <div class="column-title titans">Титанический прорыв недели</div>
-                        <div id="topTitansLeaders"></div>
-                    </div>
+        <div id="messageArea"></div>
+        
+        <div class="leaders-section" id="leadersSection" style="display: none;">
+            <div class="leaders-title-main">Топ игроков недели</div>
+            <div class="leaders-grid">
+                <div class="leaders-column">
+                    <div class="column-title breakthrough">Героический прорыв</div>
+                    <div id="topGrowthLeaders"></div>
                 </div>
-            </div>
-            
-            <div class="controls" id="controls" style="display: none;">
-                <div class="filter-buttons">
-                    <button class="btn-primary" onclick="showAll()">✓ Все</button>
-                    <button class="btn-secondary" onclick="hideAll()">✗ Скрыть</button>
-                    <button class="btn-gold" onclick="showLeadersOnly()">🏆 Лидеры</button>
-                    <button class="btn-warning" onclick="showTop(10)">Топ-10</button>
-                    <button class="btn-warning" onclick="showTop(5)">Топ-5</button>
-                    <button class="btn-expand" onclick="expandAll()">🔼 Развернуть</button>
-                    <button class="btn-collapse" onclick="collapseAll()">🔽 Свернуть</button>
-                    <button class="btn-table" onclick="showTable()">📊 Таблица</button>
+                <div class="leaders-column">
+                    <div class="column-title titans">Титанический прорыв</div>
+                    <div id="topTitansLeaders"></div>
                 </div>
-                <div class="checkbox-group" id="checkboxContainer"></div>
-                <div class="stats" id="stats"></div>
-            </div>
-            
-            <div class="graph-section" id="teamsGraphSection" style="display: none;">
-                <div class="graph-header">
-                    <div class="graph-title">Прогресс команд</div>
-                    <button class="btn-download" onclick="downloadGraph('plotDivTeams', 'progress_teams')">💾 PNG</button>
-                </div>
-                <div id="plotDivTeams"></div>
-            </div>
-            
-            <div class="graph-section" id="titansGraphSection" style="display: none;">
-                <div class="graph-header">
-                    <div class="graph-title">Прогресс Титанов</div>
-                    <button class="btn-download" onclick="downloadGraph('plotDivTitans', 'progress_titans')">💾 PNG</button>
-                </div>
-                <div id="plotDivTitans"></div>
             </div>
         </div>
         
-        <div id="tab-guild" class="tab-content">
-            <div class="status-bar">
-                <div class="status-dot" id="guildStatusDot"></div>
-                <button class="btn-success" onclick="loadGuildData(true)">Обновить</button>
-                <span id="guildLastUpdate" style="font-size: 11px; color: #666;"></span>
+        <div class="controls" id="controls" style="display: none;">
+            <div class="filter-buttons">
+                <button class="btn-filter active" onclick="showAll()">✓ Все</button>
+                <button class="btn-filter" onclick="hideAll()">✗ Скрыть</button>
+                <button class="btn-filter" onclick="showLeadersOnly()">🏆 Лидеры</button>
+                <button class="btn-filter" onclick="showTop(10)">Топ-10</button>
+                <button class="btn-filter" onclick="showTop(5)">Топ-5</button>
+                <button class="btn-filter" onclick="expandAll()">🔼 Развернуть</button>
+                <button class="btn-filter" onclick="collapseAll()">🔽 Свернуть</button>
+                <button class="btn-filter" onclick="showTable()">📊 Таблица</button>
             </div>
-            
-            <div id="guildMessageArea"></div>
-            
-            <div class="guild-selector">
-                <select id="guildSelect" onchange="changeGuild()">
-                    <option value="">Загрузка гильдий...</option>
-                </select>
-            </div>
-            
-            <div class="guild-buttons" id="guildButtons">
-                <button class="guild-button" onclick="selectGuildLocation('Мост')">Мост</button>
-                <button class="guild-button" onclick="selectGuildLocation('Бастион Льда')">Бастион Льда</button>
-                <button class="guild-button" onclick="selectGuildLocation('Врата Природы')">Врата Природы</button>
-                <button class="guild-button" onclick="selectGuildLocation('Бастион Огня')">Бастион Огня</button>
-                <button class="guild-button" onclick="selectGuildLocation('Источник Стихий')">Источник Стихий</button>
-                <button class="guild-button" onclick="selectGuildLocation('Цитадель')">Цитадель</button>
-                <button class="guild-button" onclick="selectGuildLocation('Литейная')">Литейная</button>
-                <button class="guild-button" onclick="selectGuildLocation('Маяк')">Маяк</button>
-                <button class="guild-button" onclick="selectGuildLocation('Академия Магов')">Академия Магов</button>
-                <button class="guild-button" onclick="selectGuildLocation('Казармы')">Казармы</button>
-            </div>
+            <div class="checkbox-group" id="checkboxContainer"></div>
+            <div class="stats" id="stats"></div>
         </div>
-    </div>
-    
-    <div id="locationModal" class="location-modal" onclick="closeLocationModal(event)">
-        <div class="location-content" onclick="event.stopPropagation()">
-            <div class="location-header">
-                <h3 id="locationTitle">Локация</h3>
-                <button class="btn-secondary" onclick="closeLocationModal()">✕ Закрыть</button>
+        
+        <div class="graph-section" id="teamsGraphSection" style="display: none;">
+            <div class="graph-header">
+                <div class="graph-title">Прогресс команд</div>
+                <button class="btn-download" onclick="downloadGraph('plotDivTeams', 'progress_teams')">💾 PNG</button>
             </div>
-            <div class="location-players" id="locationPlayers"></div>
+            <div id="plotDivTeams"></div>
+        </div>
+        
+        <div class="graph-section" id="titansGraphSection" style="display: none;">
+            <div class="graph-header">
+                <div class="graph-title">Прогресс Титанов</div>
+                <button class="btn-download" onclick="downloadGraph('plotDivTitans', 'progress_titans')">💾 PNG</button>
+            </div>
+            <div id="plotDivTitans"></div>
         </div>
     </div>
     
@@ -632,398 +378,154 @@
         <div class="table-content" onclick="event.stopPropagation()">
             <div class="table-header">
                 <h2>📊 Таблица</h2>
-                <button class="btn-secondary" onclick="closeTable()">✕ Закрыть</button>
+                <button class="btn-filter" onclick="closeTable()">✕ Закрыть</button>
             </div>
             <div class="table-controls">
-                <button class="btn-lang" id="toggleAllTeamsBtn" onclick="toggleAllTeams()">📋 Все команды</button>
-                <button class="btn-lang" onclick="downloadTablePNG()">📄 PNG</button>
+                <button class="btn-filter" id="toggleAllTeamsBtn" onclick="toggleAllTeams()">📋 Все команды</button>
+                <button class="btn-filter" onclick="downloadTablePNG()">📄 PNG</button>
             </div>
-            <div id="tableContainer"></div>
+            <div class="table-wrapper">
+                <div id="tableContainer"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        const DOM = {};
+        const DOM = {}, API_KEY = 'AIzaSyCjzx92n9lKcRzaPEbWTuCbKHZivvWZ0bI',
+              SPREADSHEET_ID = '1mu9YWSpAIRFfPXCLQXOZP2tLG257H66poYgfDkbZ3qs',
+              SHEET_NAME = 'Лист1', AUTO_REFRESH_MS = 120000;
         
-        let currentLanguage = localStorage.getItem('preferredLanguage') || 'ru';
-        let expandedPlayers = {};
-        let expandedTableRows = {};
-        let allTeamsExpanded = false;
-        let tableSort = { column: null, direction: 'asc' };
-        let guildRawData = null;
-        let currentGuild = '';
-        let guildColumns = {};
+        let currentLanguage = localStorage.getItem('preferredLanguage') || 'ru',
+            expandedPlayers = {}, expandedTableRows = {}, allTeamsExpanded = false,
+            tableSort = { column: null, direction: 'asc' },
+            playersData = {}, visiblePlayers = {}, playerColors = {}, dates = [],
+            leadersData = { growth: [], titans: [] };
         
-        const locationRows = {
-            'Мост': [12, 14, 16, 18],
-            'Бастион Льда': [21, 23, 25, 27],
-            'Врата Природы': [30, 32, 34, 36],
-            'Бастион Огня': [39, 41, 43, 45],
-            'Источник Стихий': [48, 50, 52, 54],
-            'Цитадель': [57, 63, 69, 75, 81, 87, 93],
-            'Литейная': [100, 106, 112, 118],
-            'Маяк': [125, 131, 137],
-            'Академия Магов': [144, 150, 156],
-            'Казармы': [163, 169, 175]
-        };
-        
-        const locationDataRows = {
-            'Мост': 1,
-            'Бастион Льда': 1,
-            'Врата Природы': 1,
-            'Бастион Огня': 1,
-            'Источник Стихий': 1,
-            'Цитадель': 5,
-            'Литейная': 5,
-            'Маяк': 5,
-            'Академия Магов': 5,
-            'Казармы': 5
-        };
+        const baseColors = ['#FF0000','#00FF00','#0000FF','#FFA500','#800080','#FF69B4','#00CED1','#FFD700','#DC143C','#20B2AA','#FF4500','#9370DB','#32CD32','#FF1493','#00BFFF','#DAA520','#FF6347','#40E0D0','#EE82EE','#F0E68C','#FF7F50','#7B68EE','#00FA9A','#FA8072','#4682B4','#9ACD32','#DA70D6','#008B8B','#CD5C5C','#6495ED'];
         
         const translations = {
-            ru: {
-                refresh: 'Обновить', updated: 'Обновлено:',
-                topTitle: 'Топ игроков недели', breakthroughTitle: 'Героический прорыв недели',
-                titansTitle: 'Титанический прорыв недели', graphTeamsTitle: 'Прогресс команд (К1+К2+К3)',
-                graphTitansTitle: 'Прогресс Титанов', showAll: '✓ Все игроки',
-                hideAll: '✗ Скрыть всех', leadersOnly: '🏆 Только лидеры',
-                top10: 'Топ-10', top5: 'Топ-5', tableTitle: '📊 Таблица прогресса',
-                growthLabel: 'К1+К2+К3:', titansLabel: 'Титаны за неделю:', growthChange: 'Прирост:',
-                chartTitleTeams: 'Прогресс команд', chartTitleTitans: 'Прогресс Титанов',
-                shown: 'показано', players: 'игроков', lines: 'линий', dates: 'Дат',
-                teams: 'Команды', titansTeam: 'Титаны', k1: 'К1', k2: 'К2', k3: 'К3',
-                sum: 'Сумма', weeklyProgress: 'Прогресс за неделю', totalProgress: 'Прогресс',
-                from: 'из', error: 'Ошибка', failedLoad: 'Не удалось загрузить данные',
-                sheetUnavailable: 'Лист недоступен', showAllTeams: '📋 Показать все команды',
-                hideAllTeams: '✕ Скрыть все команды', rank: 'Место'
-            },
-            en: {
-                refresh: 'Refresh', updated: 'Updated:',
-                topTitle: 'Top Players of the Week', breakthroughTitle: 'Heroic Weekly Breakthrough',
-                titansTitle: 'Titanic Weekly Breakthrough', graphTeamsTitle: 'Team Progress (K1+K2+K3)',
-                graphTitansTitle: 'Titans Progress', showAll: '✓ All Players',
-                hideAll: ' Hide All', leadersOnly: '🏆 Leaders Only',
-                top10: 'Top-10', top5: 'Top-5', tableTitle: '📊 Progress Table',
-                growthLabel: 'K1+K2+K3:', titansLabel: 'Titans weekly:', growthChange: 'Growth:',
-                chartTitleTeams: 'Team Progress', chartTitleTitans: 'Titans Progress',
-                shown: 'shown', players: 'players', lines: 'lines', dates: 'Dates',
-                teams: 'Teams', titansTeam: 'Titans', k1: 'K1', k2: 'K2', k3: 'K3',
-                sum: 'Sum', weeklyProgress: 'Weekly Progress', totalProgress: 'Progress',
-                from: 'of', error: 'Error', failedLoad: 'Failed to load data',
-                sheetUnavailable: 'Sheet unavailable', showAllTeams: '📋 Show All Teams',
-                hideAllTeams: '✕ Hide All Teams', rank: 'Rank'
-            }
+            ru: { refresh:'Обновить', updated:'Обновлено:', breakthroughTitle:'Героический прорыв', titansTitle:'Титанический прорыв',
+                showAll:'✓ Все', hideAll:'✗ Скрыть', leadersOnly:'🏆 Лидеры', top10:'Топ-10', top5:'Топ-5',
+                growthLabel:'К1+К2+К3:', titansLabel:'Титаны:', chartTitleTeams:'Прогресс команд', chartTitleTitans:'Прогресс Титанов',
+                shown:'показано', players:'игроков', dates:'Дат', teams:'Команды', k1:'К1', k2:'К2', k3:'К3',
+                sum:'Сумма', weeklyProgress:'Прогресс за неделю', totalProgress:'Прогресс', from:'из',
+                error:'Ошибка', failedLoad:'Не удалось загрузить данные', showAllTeams:'📋 Все команды', hideAllTeams:'✕ Скрыть', rank:'Место' },
+            en: { refresh:'Refresh', updated:'Updated:', breakthroughTitle:'Heroic Breakthrough', titansTitle:'Titanic Breakthrough',
+                showAll:'✓ All', hideAll:'✗ Hide', leadersOnly:'🏆 Leaders', top10:'Top-10', top5:'Top-5',
+                growthLabel:'K1+K2+K3:', titansLabel:'Titans:', chartTitleTeams:'Team Progress', chartTitleTitans:'Titans Progress',
+                shown:'shown', players:'players', dates:'Dates', teams:'Teams', k1:'K1', k2:'K2', k3:'K3',
+                sum:'Sum', weeklyProgress:'Weekly Progress', totalProgress:'Progress', from:'of',
+                error:'Error', failedLoad:'Failed to load', showAllTeams:'📋 All Teams', hideAllTeams:'✕ Hide', rank:'Rank' }
         };
         
-        const t = (key) => translations[currentLanguage][key] || key;
+        const t = key => translations[currentLanguage][key] || key;
         
-        const setLanguage = (lang) => {
+        const setLanguage = lang => {
             currentLanguage = lang;
             localStorage.setItem('preferredLanguage', lang);
-            applyTranslations();
-            renderLeaders();
-            createGraphs();
-            updateStats();
+            DOM.langRu.classList.toggle('active', lang === 'ru');
+            DOM.langEn.classList.toggle('active', lang === 'en');
+            renderLeaders(); createGraphs(); updateStats();
         };
-        
-        const applyTranslations = () => {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                el.textContent = t(el.getAttribute('data-i18n'));
-            });
-            DOM.langRu.classList.toggle('active', currentLanguage === 'ru');
-            DOM.langEn.classList.toggle('active', currentLanguage === 'en');
-            if (DOM.lastUpdate.dataset.time) {
-                DOM.lastUpdate.textContent = `${t('updated')} ${DOM.lastUpdate.dataset.time}`;
-            }
-        };
-
-        const API_KEY = 'AIzaSyCjzx92n9lKcRzaPEbWTuCbKHZivvWZ0bI';
-        const SPREADSHEET_ID = '1mu9YWSpAIRFfPXCLQXOZP2tLG257H66poYgfDkbZ3qs';
-        let SHEET_NAME = 'Лист1';
-        const GUILD_SHEET_NAME = 'Война гильдий';
-        const AUTO_REFRESH_MS = 120000;
-        
-        let playersData = {};
-        let visiblePlayers = {};
-        let playerColors = {};
-        let dates = [];
-        let leadersData = { growth: [], titans: [] };
-        
-        const baseColors = [
-            '#FF0000', '#00FF00', '#0000FF', '#FFA500', '#800080', 
-            '#FF69B4', '#00CED1', '#FFD700', '#DC143C', '#20B2AA',
-            '#FF4500', '#9370DB', '#32CD32', '#FF1493', '#00BFFF',
-            '#DAA520', '#FF6347', '#40E0D0', '#EE82EE', '#F0E68C',
-            '#FF7F50', '#7B68EE', '#00FA9A', '#FA8072', '#4682B4',
-            '#9ACD32', '#DA70D6', '#008B8B', '#CD5C5C', '#6495ED'
-        ];
 
         const cacheDOM = () => {
-            DOM.statusDot = document.getElementById('statusDot');
-            DOM.messageArea = document.getElementById('messageArea');
-            DOM.controls = document.getElementById('controls');
-            DOM.leadersSection = document.getElementById('leadersSection');
-            DOM.teamsGraphSection = document.getElementById('teamsGraphSection');
-            DOM.titansGraphSection = document.getElementById('titansGraphSection');
-            DOM.lastUpdate = document.getElementById('lastUpdate');
-            DOM.checkboxContainer = document.getElementById('checkboxContainer');
-            DOM.stats = document.getElementById('stats');
-            DOM.topGrowthLeaders = document.getElementById('topGrowthLeaders');
-            DOM.topTitansLeaders = document.getElementById('topTitansLeaders');
-            DOM.plotDivTeams = document.getElementById('plotDivTeams');
-            DOM.plotDivTitans = document.getElementById('plotDivTitans');
-            DOM.langRu = document.getElementById('langRu');
-            DOM.langEn = document.getElementById('langEn');
+            ['statusDot','messageArea','controls','leadersSection','teamsGraphSection','titansGraphSection',
+             'lastUpdate','checkboxContainer','stats','topGrowthLeaders','topTitansLeaders',
+             'plotDivTeams','plotDivTitans','langRu','langEn'].forEach(id => DOM[id] = document.getElementById(id));
             
-            DOM.checkboxContainer.addEventListener('change', (e) => {
+            DOM.checkboxContainer.addEventListener('change', e => {
                 if (e.target.type === 'checkbox') {
-                    const playerId = e.target.id.replace('chk_', '');
-                    visiblePlayers[playerId] = e.target.checked;
-                    createGraphs();
-                    updateStats();
+                    visiblePlayers[e.target.id.replace('chk_', '')] = e.target.checked;
+                    createGraphs(); updateStats();
                 }
             });
         };
 
-        const switchMainTab = (tabName, element) => {
-            document.querySelectorAll('.main-tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            element.classList.add('active');
-            document.getElementById(`tab-${tabName}`).classList.add('active');
-            
-            if (tabName === 'guild' && !guildRawData) {
-                loadGuildData(true);
+        const findPlayerFirstIndex = player => {
+            const data = playersData[player];
+            for (let i = 0; i < dates.length; i++) {
+                if ((data.k1[i]||0) + (data.k2[i]||0) + (data.k3[i]||0) + (data.T[i]||0) > 0) return i;
             }
+            return -1;
         };
 
-        const loadGuildData = async (force = false) => {
-            const statusDot = document.getElementById('guildStatusDot');
-            const messageArea = document.getElementById('guildMessageArea');
-            const guildSelect = document.getElementById('guildSelect');
-            
-            statusDot.className = 'status-dot';
-            messageArea.innerHTML = '';
-            
-            try {
-                const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(GUILD_SHEET_NAME)}!A1:T200?key=${API_KEY}`;
-                const response = await fetch(url);
-                
-                if (!response.ok) throw new Error('Не удалось загрузить данные');
-                
-                const data = await response.json();
-                const values = data.values;
-                
-                if (!values || values.length === 0) throw new Error('Данные пусты');
-                
-                guildRawData = values;
-                
-                const headers = values[0];
-                guildColumns = {};
-                
-                for (let i = 1; i < headers.length; i += 2) {
-                    const guildName = headers[i];
-                    if (guildName && guildName.toString().trim() !== '') {
-                        const guildNameStr = guildName.toString().trim();
-                        guildColumns[guildNameStr] = {
-                            name: i,
-                            power: i + 1
-                        };
-                    }
-                }
-                
-                if (Object.keys(guildColumns).length === 0) {
-                    guildColumns = {
-                        'Polska Husaria': { name: 2, power: 3 },
-                        'The Last Frontiers': { name: 6, power: 7 },
-                        'Atlantis': { name: 10, power: 11 },
-                        'APEX': { name: 14, power: 15 },
-                        'The Unbreakables': { name: 18, power: 19 }
-                    };
-                }
-                
-                guildSelect.innerHTML = '';
-                Object.keys(guildColumns).forEach((guildName, index) => {
-                    const option = document.createElement('option');
-                    option.value = guildName;
-                    option.textContent = guildName;
-                    if (index === 0) {
-                        option.selected = true;
-                        currentGuild = guildName;
-                    }
-                    guildSelect.appendChild(option);
-                });
-                
-                statusDot.className = 'status-dot success';
-                const timeStr = new Date().toLocaleTimeString('ru-RU');
-                document.getElementById('guildLastUpdate').textContent = `Обновлено: ${timeStr}`;
-                
-            } catch (error) {
-                console.error('Ошибка:', error);
-                statusDot.className = 'status-dot error';
-                messageArea.innerHTML = `<div class="error-box"><strong>⚠️ Ошибка:</strong> ${error.message}</div>`;
-                
-                const guildSelect = document.getElementById('guildSelect');
-                guildSelect.innerHTML = '<option value="">Ошибка загрузки</option>';
-            }
+        const getTeamSum = (player, idx) => {
+            const d = playersData[player];
+            return (d.k1[idx]||0) + (d.k2[idx]||0) + (d.k3[idx]||0);
         };
 
-        const changeGuild = () => {
-            const guildSelect = document.getElementById('guildSelect');
-            currentGuild = guildSelect.value;
+        const calculatePlayerProgress = player => {
+            const lastIdx = dates.length - 1, prevIdx = dates.length >= 2 ? dates.length - 2 : 0,
+                  firstIdx = findPlayerFirstIndex(player);
+            if (firstIdx === -1) return { weeklyGrowth:0, totalGrowth:0, titansWeeklyGrowth:0, titansPower:0, totalPower:0, firstIdx:-1 };
+            
+            const lastSum = getTeamSum(player, lastIdx), firstSum = getTeamSum(player, firstIdx),
+                  prevSum = firstIdx <= prevIdx ? getTeamSum(player, prevIdx) : 0,
+                  lastTitans = playersData[player].T[lastIdx]||0,
+                  prevTitans = firstIdx <= prevIdx ? (playersData[player].T[prevIdx]||0) : 0;
+            
+            return {
+                weeklyGrowth: lastIdx === firstIdx ? 0 : lastSum - prevSum,
+                totalGrowth: lastSum - firstSum,
+                titansWeeklyGrowth: lastIdx === firstIdx ? 0 : lastTitans - prevTitans,
+                titansPower: lastTitans, totalPower: lastSum, firstIdx
+            };
         };
 
-        const selectGuildLocation = (location) => {
-            const rows = locationRows[location];
-            const cols = guildColumns[currentGuild];
-            
-            if (!cols) {
-                alert('Ошибка: не найдены столбцы для выбранной гильдии');
-                return;
-            }
-            if (!rows) {
-                alert('Ошибка: не найдены строки для выбранной локации');
-                return;
-            }
-            if (!guildRawData) {
-                alert('Данные ещё не загружены. Подождите...');
-                loadGuildData(true);
-                return;
-            }
-            
-            loadLocationData(location, rows, cols);
-        };
-
-        const loadLocationData = (location, rows, cols) => {
-            try {
-                const players = [];
-                const dataRowCount = locationDataRows[location] || 1;
-                
-                rows.forEach(row => {
-                    const rowIndex = row - 1; 
-                    
-                    if (rowIndex < guildRawData.length) {
-                        const row_data = guildRawData[rowIndex];
-                        
-                        const name = (row_data && row_data[cols.name] !== undefined) ? row_data[cols.name].toString().trim() : '';
-                        const powerRaw = (row_data && row_data[cols.power] !== undefined) ? row_data[cols.power] : 0;
-                        const power = parseFloat(powerRaw.toString().replace(/\s/g, '').replace(',', '.')) || 0;
-                        
-                        if (name) {
-                            const details = [];
-                            for (let i = 1; i <= dataRowCount; i++) {
-                                const detailRowIndex = rowIndex + i;
-                                if (detailRowIndex < guildRawData.length) {
-                                    const detailRow = guildRawData[detailRowIndex];
-                                    if (detailRow) {
-                                        const detailName = (detailRow[cols.name] !== undefined && detailRow[cols.name] !== null) ? detailRow[cols.name].toString().trim() : '';
-                                        const detailPower = (detailRow[cols.power] !== undefined && detailRow[cols.power] !== null) ? detailRow[cols.power].toString().trim() : '';
-                                        
-                                        if (detailName || detailPower) {
-                                            const parts = [];
-                                            if (detailName) parts.push(detailName);
-                                            if (detailPower) parts.push(detailPower);
-                                            details.push(parts.join(' | '));
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            players.push({ name, power, rowIndex, details });
-                        }
-                    }
-                });
-                
-                showLocationModal(location, players);
-                
-            } catch (error) {
-                console.error('Ошибка:', error);
-                alert('Не удалось загрузить данные локации: ' + error.message);
-            }
-        };
-
-        const showLocationModal = (location, players) => {
-            document.getElementById('locationTitle').textContent = `${location} - ${currentGuild}`;
-            
-            const playersContainer = document.getElementById('locationPlayers');
-            
-            if (players.length === 0) {
-                playersContainer.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">Нет данных</p>';
-            } else {
-                playersContainer.innerHTML = players.map((player, idx) => `
-                    <div class="location-player-wrapper">
-                        <div class="location-player" onclick="togglePlayerDetails(${idx})">
-                            <div class="location-player-name">
-                                <span class="player-toggle-icon" id="toggle-icon-${idx}">▶</span>
-                                ${player.name}
-                            </div>
-                            <div class="location-player-power">${player.power.toLocaleString('ru-RU')}</div>
-                        </div>
-                        <div class="location-player-details" id="player-details-${idx}">
-                            ${player.details.length > 0 ? player.details.map(detail => `<span class="location-detail-row">${detail}</span>`).join('') : '<span class="location-detail-row" style="color: #999;">Нет дополнительных данных</span>'}
-                        </div>
-                    </div>
-                `).join('');
-            }
-            
-            document.getElementById('locationModal').classList.add('show');
-        };
-
-        const togglePlayerDetails = (idx) => {
-            const detailsEl = document.getElementById(`player-details-${idx}`);
-            const iconEl = document.getElementById(`toggle-icon-${idx}`);
-            const playerEl = detailsEl.previousElementSibling;
-            
-            if (detailsEl.classList.contains('show')) {
-                detailsEl.classList.remove('show');
-                iconEl.textContent = '▶';
-                iconEl.classList.remove('rotated');
-                playerEl.classList.remove('expanded');
-            } else {
-                detailsEl.classList.add('show');
-                iconEl.textContent = '▼';
-                iconEl.classList.add('rotated');
-                playerEl.classList.add('expanded');
-            }
-        };
-
-        const closeLocationModal = (event) => {
-            if (!event || event.target.id === 'locationModal' || event.target.tagName === 'BUTTON') {
-                document.getElementById('locationModal').classList.remove('show');
-            }
-        };
-
-        const loadData = async (force = false) => {
+        const loadData = async force => {
             DOM.statusDot.className = 'status-dot';
             DOM.messageArea.innerHTML = '';
             
             try {
                 let values = null;
-                const sheetNames = [SHEET_NAME, 'Sheet1', 'Лист1', 'Лист 1'];
-                
-                for (const name of sheetNames) {
+                for (const name of [SHEET_NAME, 'Sheet1', 'Лист1', 'Лист 1']) {
                     try {
-                        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(name)}?key=${API_KEY}`;
-                        const response = await fetch(url);
-                        if (response.ok) {
-                            values = (await response.json()).values;
-                            break;
-                        }
-                    } catch (e) { console.log(`${t('sheetUnavailable')}: "${name}"`); }
+                        const resp = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(name)}?key=${API_KEY}`);
+                        if (resp.ok) { values = (await resp.json()).values; break; }
+                    } catch(e) {}
                 }
                 
-                if (!values || values.length === 0) throw new Error(t('failedLoad'));
+                if (!values?.length) throw new Error(t('failedLoad'));
                 
-                const result = processData(values);
-                playersData = result.playersData;
-                dates = result.dates;
+                const headers = values[0];
+                dates = [];
+                for (let i = 3; i < headers.length; i += 2) {
+                    if (headers[i]?.toString().trim()) dates.push(headers[i].toString().trim());
+                }
                 
-                const sortedPlayers = Object.keys(playersData).sort();
-                sortedPlayers.forEach((player, idx) => {
-                    playerColors[player] = player === 'Ares' ? '#000000' : baseColors[idx % baseColors.length];
-                    if (visiblePlayers[player] === undefined) visiblePlayers[player] = true;
-                    if (expandedPlayers[player] === undefined) expandedPlayers[player] = false;
-                    if (expandedTableRows[player] === undefined) expandedTableRows[player] = false;
+                playersData = {};
+                let current = null;
+                for (let i = 1; i < values.length; i++) {
+                    const row = values[i];
+                    if (!row || row.length < 3) continue;
+                    const name = row[1], type = row[2];
+                    if (name?.toString().trim()) {
+                        current = name.toString().trim();
+                        if (!playersData[current]) playersData[current] = { k1:[], k2:[], k3:[], T:[] };
+                    }
+                    if (current && type) {
+                        const t = type.toString().trim().toLowerCase();
+                        let tn = null;
+                        if (t==='к1'||t==='k1') tn='k1';
+                        else if (t==='к2'||t==='k2') tn='k2';
+                        else if (t==='к3'||t==='k3') tn='k3';
+                        else if (t==='т'||t==='t'||t==='титаны') tn='T';
+                        if (tn) {
+                            const arr = [];
+                            for (let j = 3; j < row.length; j += 2) {
+                                arr.push(parseFloat(String(row[j]||'0').replace(/\s/g,'').replace(',','.'))||0);
+                            }
+                            playersData[current][tn] = arr;
+                        }
+                    }
+                }
+                
+                const sorted = Object.keys(playersData).sort();
+                sorted.forEach((p, i) => {
+                    playerColors[p] = p === 'Ares' ? '#000000' : baseColors[i % baseColors.length];
+                    if (visiblePlayers[p] === undefined) visiblePlayers[p] = true;
+                    if (expandedPlayers[p] === undefined) expandedPlayers[p] = false;
+                    if (expandedTableRows[p] === undefined) expandedTableRows[p] = false;
                 });
                 
                 calculateLeaders();
@@ -1038,693 +540,312 @@
                 DOM.teamsGraphSection.style.display = 'block';
                 DOM.titansGraphSection.style.display = 'block';
                 
-                const timeStr = new Date().toLocaleTimeString('ru-RU');
-                DOM.lastUpdate.textContent = `${t('updated')} ${timeStr}`;
-                DOM.lastUpdate.dataset.time = timeStr;
+                const time = new Date().toLocaleTimeString('ru-RU');
+                DOM.lastUpdate.textContent = `${t('updated')} ${time}`;
+                DOM.lastUpdate.dataset.time = time;
                 
-                setTimeout(() => {
-                    Plotly.Plots.resize(DOM.plotDivTeams);
-                    Plotly.Plots.resize(DOM.plotDivTitans);
-                }, 100);
-                
-            } catch (error) {
-                console.error('Ошибка:', error);
+                setTimeout(() => { Plotly.Plots.resize(DOM.plotDivTeams); Plotly.Plots.resize(DOM.plotDivTitans); }, 100);
+            } catch (err) {
+                console.error(err);
                 DOM.statusDot.className = 'status-dot error';
-                DOM.messageArea.innerHTML = `<div class="error-box"><strong>⚠️ ${t('error')}:</strong> ${error.message}</div>`;
+                DOM.messageArea.innerHTML = `<div class="error-box"><strong>️ ${t('error')}:</strong> ${err.message}</div>`;
             }
-        };
-
-        const processData = (values) => {
-            const headers = values[0];
-            const dates = [];
-            for (let i = 3; i < headers.length; i += 2) {
-                const h = headers[i];
-                if (h && h.toString().trim() !== '') dates.push(h.toString().trim());
-            }
-            
-            const playersData = {};
-            let currentPlayer = null;
-            
-            for (let i = 1; i < values.length; i++) {
-                const row = values[i];
-                if (!row || row.length < 3) continue;
-                
-                const name = row[1];
-                const type = row[2];
-                
-                if (name && name.toString().trim() !== '') {
-                    currentPlayer = name.toString().trim();
-                    if (!playersData[currentPlayer]) playersData[currentPlayer] = { k1: [], k2: [], k3: [], T: [] };
-                }
-                
-                if (currentPlayer && type) {
-                    const cleanType = type.toString().trim().toLowerCase();
-                    let typeName = null;
-                    if (cleanType === 'к1' || cleanType === 'k1') typeName = 'k1';
-                    else if (cleanType === 'к2' || cleanType === 'k2') typeName = 'k2';
-                    else if (cleanType === 'к3' || cleanType === 'k3') typeName = 'k3';
-                    else if (cleanType === 'т' || cleanType === 't' || cleanType === 'титаны') typeName = 'T';
-                    
-                    if (typeName) {
-                        const valuesArr = [];
-                        for (let j = 3; j < row.length; j += 2) {
-                            const val = row[j];
-                            valuesArr.push(parseFloat(String(val || '0').replace(/\s/g, '').replace(',', '.')) || 0);
-                        }
-                        playersData[currentPlayer][typeName] = valuesArr;
-                    }
-                }
-            }
-            return { playersData, dates };
         };
 
         const calculateLeaders = () => {
-            const lastIdx = dates.length - 1;
-            const prevIdx = dates.length >= 2 ? dates.length - 2 : 0;
-            
-            const playersStats = Object.keys(playersData).map(player => {
-                const data = playersData[player];
-                
-                const k1Last = data.k1[lastIdx] || 0;
-                const k2Last = data.k2[lastIdx] || 0;
-                const k3Last = data.k3[lastIdx] || 0;
-                const totalLast = k1Last + k2Last + k3Last;
-                
-                const k1Prev = data.k1[prevIdx] || 0;
-                const k2Prev = data.k2[prevIdx] || 0;
-                const k3Prev = data.k3[prevIdx] || 0;
-                const totalPrev = k1Prev + k2Prev + k3Prev;
-                
-                const weeklyGrowth = totalLast - totalPrev;
-                
-                const titansLast = data.T[lastIdx] || 0;
-                const titansPrev = data.T[prevIdx] || 0;
-                const titansWeeklyGrowth = titansLast - titansPrev;
-                
-                const hasPrevData = totalPrev > 0;
-                const hasPrevTitansData = titansPrev > 0;
-                
+            const lastIdx = dates.length - 1, prevIdx = dates.length >= 2 ? dates.length - 2 : 0;
+            const stats = Object.keys(playersData).map(player => {
+                const p = calculatePlayerProgress(player), first = p.firstIdx;
+                const tFirst = (() => { for(let i=0;i<dates.length;i++) if((playersData[player].T[i]||0)>0) return i; return -1; })();
                 return {
-                    player,
-                    totalPower: totalLast,
-                    weeklyGrowth,
-                    titansPower: titansLast,
-                    titansWeeklyGrowth,
-                    hasPrevData,
-                    hasPrevTitansData,
+                    player, totalPower:p.totalPower, weeklyGrowth:p.weeklyGrowth,
+                    titansPower:p.titansPower, titansWeeklyGrowth:p.titansWeeklyGrowth,
+                    hasPrevData: first!==-1 && (first<=prevIdx || first===lastIdx),
+                    hasPrevTitansData: tFirst!==-1 && (tFirst<=prevIdx || tFirst===lastIdx),
                     color: playerColors[player]
                 };
             });
-            
-            leadersData.growth = playersStats
-                .filter(p => p.hasPrevData)
-                .sort((a, b) => b.weeklyGrowth - a.weeklyGrowth)
-                .slice(0, 3);
-            
-            leadersData.titans = playersStats
-                .filter(p => p.hasPrevTitansData)
-                .sort((a, b) => b.titansWeeklyGrowth - a.titansWeeklyGrowth)
-                .slice(0, 3);
+            leadersData.growth = stats.filter(s=>s.hasPrevData).sort((a,b)=>b.weeklyGrowth-a.weeklyGrowth).slice(0,3);
+            leadersData.titans = stats.filter(s=>s.hasPrevTitansData).sort((a,b)=>b.titansWeeklyGrowth-a.titansWeeklyGrowth).slice(0,3);
         };
 
         const renderLeaders = () => {
-            const medalClasses = ['medal-gold', 'medal-silver', 'medal-bronze'];
-            
-            DOM.topGrowthLeaders.innerHTML = leadersData.growth.map((leader, idx) => `
-                <div class="leader-card ${medalClasses[idx]}" onclick="selectPlayer('${leader.player}')">
-                    <div class="color-indicator" style="background-color: ${leader.color}"></div>
+            const medals = ['medal-gold','medal-silver','medal-bronze'];
+            DOM.topGrowthLeaders.innerHTML = leadersData.growth.map((l,i) => `
+                <div class="leader-card ${medals[i]}" onclick="selectPlayer('${l.player}')">
+                    <div class="color-indicator" style="background:${l.color}"></div>
                     <div class="leader-info">
-                        <div class="leader-name">${leader.player}</div>
-                        <div class="leader-stats">
-                            ${t('growthLabel')} ${leader.totalPower.toLocaleString('ru-RU')}<br>
-                            <span style="color:#9933cc; font-size:0.85em;">${t('titansLabel')} ${leader.titansWeeklyGrowth >= 0 ? '+' : ''}${leader.titansWeeklyGrowth.toLocaleString('ru-RU')}</span>
-                        </div>
+                        <div class="leader-name">${l.player}</div>
+                        <div class="leader-stats">${t('growthLabel')} ${l.totalPower.toLocaleString()}<br><span style="color:#FF6B35">${t('titansLabel')} ${l.titansWeeklyGrowth>=0?'+':''}${l.titansWeeklyGrowth.toLocaleString()}</span></div>
                     </div>
-                    <div class="leader-value" style="color: #28a745;">${leader.weeklyGrowth >= 0 ? '+' : ''}${leader.weeklyGrowth.toLocaleString('ru-RU')}</div>
-                </div>
-            `).join('');
-            
-            DOM.topTitansLeaders.innerHTML = leadersData.titans.map((leader, idx) => `
-                <div class="leader-card ${medalClasses[idx]}" onclick="selectPlayer('${leader.player}')">
-                    <div class="color-indicator" style="background-color: ${leader.color}"></div>
+                    <div class="leader-value" style="color:#4CAF50">${l.weeklyGrowth>=0?'+':''}${l.weeklyGrowth.toLocaleString()}</div>
+                </div>`).join('');
+            DOM.topTitansLeaders.innerHTML = leadersData.titans.map((l,i) => `
+                <div class="leader-card ${medals[i]}" onclick="selectPlayer('${l.player}')">
+                    <div class="color-indicator" style="background:${l.color}"></div>
                     <div class="leader-info">
-                        <div class="leader-name">${leader.player}</div>
-                        <div class="leader-stats">
-                            ${t('growthLabel')} ${leader.totalPower.toLocaleString('ru-RU')}<br>
-                            <span style="color:#666; font-size:0.85em;">${t('titansLabel')} ${leader.titansPower.toLocaleString('ru-RU')}</span>
-                        </div>
+                        <div class="leader-name">${l.player}</div>
+                        <div class="leader-stats">${t('growthLabel')} ${l.totalPower.toLocaleString()}<br><span style="color:#B0B0B0">${t('titansLabel')} ${l.titansPower.toLocaleString()}</span></div>
                     </div>
-                    <div class="leader-value" style="color: #9933cc;">${leader.titansWeeklyGrowth >= 0 ? '+' : ''}${leader.titansWeeklyGrowth.toLocaleString('ru-RU')}</div>
-                </div>
-            `).join('');
+                    <div class="leader-value" style="color:#FF6B35">${l.titansWeeklyGrowth>=0?'+':''}${l.titansWeeklyGrowth.toLocaleString()}</div>
+                </div>`).join('');
         };
 
-        const selectPlayer = (playerName) => {
+        const selectPlayer = name => {
             Object.keys(playersData).forEach(p => {
                 visiblePlayers[p] = false;
-                const checkbox = document.getElementById(`chk_${p}`);
-                if (checkbox) checkbox.checked = false;
+                const cb = document.getElementById(`chk_${p}`);
+                if (cb) cb.checked = false;
             });
-            visiblePlayers[playerName] = true;
-            const checkbox = document.getElementById(`chk_${playerName}`);
-            if (checkbox) checkbox.checked = true;
-            createGraphs();
-            updateStats();
-            DOM.teamsGraphSection.scrollIntoView({ behavior: 'smooth' });
+            visiblePlayers[name] = true;
+            const cb = document.getElementById(`chk_${name}`);
+            if (cb) cb.checked = true;
+            createGraphs(); updateStats();
+            DOM.teamsGraphSection.scrollIntoView({behavior:'smooth'});
         };
 
         const initCheckboxes = () => {
-            const topGrowthNames = leadersData.growth.map(l => l.player);
-            const topTitansNames = leadersData.titans.map(l => l.player);
-            
-            const html = Object.keys(playersData).sort().map(player => {
-                const isLeader = topGrowthNames.includes(player) || topTitansNames.includes(player);
-                const isExpanded = expandedPlayers[player];
-                
-                return `
-                    <div class="checkbox-item ${isLeader ? 'leader-item' : ''}">
-                        <input type="checkbox" id="chk_${player}" ${visiblePlayers[player] !== false ? 'checked' : ''}>
-                        <span class="color-box" style="background-color: ${playerColors[player]}"></span>
-                        <label for="chk_${player}" style="cursor: pointer; flex: 1;">${player}</label>
-                        <button type="button" class="expand-btn ${isExpanded ? 'expanded' : ''}" 
-                                onclick="toggleExpand('${player}', this)" 
-                                title="${isExpanded ? 'Свернуть кривые' : 'Развернуть кривые'}">
-                            ${isExpanded ? '🔼' : '🔽'}
-                        </button>
-                    </div>
-                `;
-            }).join('');
-            
-            DOM.checkboxContainer.innerHTML = html;
+            const leaders = new Set([...leadersData.growth.map(l=>l.player), ...leadersData.titans.map(l=>l.player)]);
+            DOM.checkboxContainer.innerHTML = Object.keys(playersData).sort().map(p => `
+                <div class="checkbox-item ${leaders.has(p)?'leader-item':''}">
+                    <input type="checkbox" id="chk_${p}" ${visiblePlayers[p]!==false?'checked':''}>
+                    <span class="color-box" style="background:${playerColors[p]}"></span>
+                    <label for="chk_${p}" style="cursor:pointer;flex:1;color:#F0F0F0">${p}</label>
+                    <button class="expand-btn ${expandedPlayers[p]?'active':''}" onclick="toggleExpand('${p}',this)">${expandedPlayers[p]?'':''}</button>
+                </div>`).join('');
         };
 
-        const toggleExpand = (player, btn) => {
-            expandedPlayers[player] = !expandedPlayers[player];
-            btn.textContent = expandedPlayers[player] ? '🔼' : '🔽';
-            btn.title = expandedPlayers[player] ? 'Свернуть кривые' : 'Развернуть кривые';
-            btn.classList.toggle('expanded', expandedPlayers[player]);
+        const toggleExpand = (p, btn) => {
+            expandedPlayers[p] = !expandedPlayers[p];
+            btn.textContent = expandedPlayers[p] ? '' : '🔽';
+            btn.classList.toggle('active', expandedPlayers[p]);
             createGraphs();
         };
 
-        const expandAll = () => {
-            Object.keys(playersData).forEach(p => expandedPlayers[p] = true);
-            initCheckboxes();
-            createGraphs();
-        };
-        
-        const collapseAll = () => {
-            Object.keys(playersData).forEach(p => expandedPlayers[p] = false);
-            initCheckboxes();
-            createGraphs();
-        };
+        const expandAll = () => { Object.keys(playersData).forEach(p=>expandedPlayers[p]=true); initCheckboxes(); createGraphs(); };
+        const collapseAll = () => { Object.keys(playersData).forEach(p=>expandedPlayers[p]=false); initCheckboxes(); createGraphs(); };
 
         const toggleAllTeams = () => {
             allTeamsExpanded = !allTeamsExpanded;
-            Object.keys(playersData).forEach(p => {
-                if (visiblePlayers[p]) {
-                    expandedTableRows[p] = allTeamsExpanded;
-                }
-            });
-            updateToggleButton();
-            renderTable();
-        };
-
-        const updateToggleButton = () => {
-            const btn = document.getElementById('toggleAllTeamsBtn');
-            if (btn) {
-                btn.textContent = allTeamsExpanded ? t('hideAllTeams') : t('showAllTeams');
-            }
-        };
-
-        const toggleTableRow = (player) => {
-            expandedTableRows[player] = !expandedTableRows[player];
+            Object.keys(playersData).forEach(p => { if (visiblePlayers[p]) expandedTableRows[p] = allTeamsExpanded; });
+            document.getElementById('toggleAllTeamsBtn').textContent = allTeamsExpanded ? t('hideAllTeams') : t('showAllTeams');
             renderTable();
         };
 
         const showTable = () => {
-            const modal = document.getElementById('tableModal');
-            modal.classList.add('show');
-            updateToggleButton();
+            document.getElementById('tableModal').classList.add('show');
+            document.getElementById('toggleAllTeamsBtn').textContent = allTeamsExpanded ? t('hideAllTeams') : t('showAllTeams');
             renderTable();
         };
-        
+
         const downloadTablePNG = async () => {
-            const tableContainer = document.getElementById('tableContainer');
-            
             try {
-                const canvas = await html2canvas(tableContainer, {
-                    backgroundColor: '#ffffff',
-                    scale: 2,
-                    useCORS: true,
-                    scrollX: 0,
-                    scrollY: 0,
-                    windowWidth: tableContainer.scrollWidth,
-                    windowHeight: tableContainer.scrollHeight
-                });
-                
-                const link = document.createElement('a');
-                link.download = `progress_table_${new Date().toISOString().slice(0,10)}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            } catch (error) {
-                console.error('Ошибка при выгрузке таблицы:', error);
-                alert('Не удалось выгрузить таблицу. Попробуйте ещё раз.');
-            }
+                const canvas = await html2canvas(document.getElementById('tableContainer'), {backgroundColor:'#fff',scale:2,useCORS:true,scrollX:0,scrollY:0,windowWidth:document.getElementById('tableContainer').scrollWidth,windowHeight:document.getElementById('tableContainer').scrollHeight});
+                const a = document.createElement('a');
+                a.download = `table_${new Date().toISOString().slice(0,10)}.png`;
+                a.href = canvas.toDataURL('image/png');
+                a.click();
+            } catch(e) { alert('Ошибка выгрузки'); }
         };
-        
-        const sortTable = (column) => {
-            if (tableSort.column === column) {
-                tableSort.direction = tableSort.direction === 'asc' ? 'desc' : 'asc';
-            } else {
-                tableSort.column = column;
-                tableSort.direction = 'desc';
-            }
+
+        const sortTable = col => {
+            tableSort.direction = tableSort.column === col ? (tableSort.direction==='asc'?'desc':'asc') : 'desc';
+            tableSort.column = col;
             renderTable();
         };
-        
-        const createSparkline = (values, color = '#4A5568') => {
-            const width = 50;
-            const height = 18;
-            const padding = 2;
-            
-            const min = Math.min(...values);
-            const max = Math.max(...values);
-            const range = max - min || 1;
-            
-            const points = values.map((val, idx) => {
-                const x = padding + (idx / (values.length - 1)) * (width - 2 * padding);
-                const y = height - padding - ((val - min) / range) * (height - 2 * padding);
-                return `${x},${y}`;
-            }).join(' ');
-            
-            return `<svg class="sparkline" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-                <polyline points="${points}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                ${values.map((val, idx) => {
-                    const x = padding + (idx / (values.length - 1)) * (width - 2 * padding);
-                    const y = height - padding - ((val - min) / range) * (height - 2 * padding);
-                    return `<circle cx="${x}" cy="${y}" r="1.5" fill="${color}"/>`;
-                }).join('')}
-            </svg>`;
-        };
-        
+
         const renderTable = () => {
-            const container = document.getElementById('tableContainer');
-            
-            const lastIdx = dates.length - 1;
-            const prevIdx = dates.length >= 2 ? dates.length - 2 : 0;
-            const firstIdx = 0;
-            
-            let playersDataForTable = [];
-            
-            Object.keys(playersData).sort().forEach(player => {
-                if (!visiblePlayers[player]) return;
-                
-                const k1Last = playersData[player].k1[lastIdx] || 0;
-                const k2Last = playersData[player].k2[lastIdx] || 0;
-                const k3Last = playersData[player].k3[lastIdx] || 0;
-                const tLast = playersData[player].T[lastIdx] || 0;
-                const sumLast = k1Last + k2Last + k3Last;
-                
-                const sumFirst = (playersData[player].k1[firstIdx] || 0) + 
-                                (playersData[player].k2[firstIdx] || 0) + 
-                                (playersData[player].k3[firstIdx] || 0);
-                
-                const weeklyProgress = dates.length >= 2 ? sumLast - ((playersData[player].k1[prevIdx] || 0) + (playersData[player].k2[prevIdx] || 0) + (playersData[player].k3[prevIdx] || 0)) : 0;
-                const totalProgress = sumLast - sumFirst;
-                const percentProgress = sumFirst > 0 ? (totalProgress / sumFirst * 100) : 0;
-                
-                playersDataForTable.push({
-                    player,
-                    tLast,
-                    sumLast,
-                    weeklyProgress,
-                    totalProgress,
-                    percentProgress,
-                    sumValues: dates.map((_, idx) => (playersData[player].k1[idx] || 0) + (playersData[player].k2[idx] || 0) + (playersData[player].k3[idx] || 0))
-                });
+            const lastIdx = dates.length-1, prevIdx = dates.length>=2 ? dates.length-2 : 0;
+            let data = [];
+            Object.keys(playersData).sort().forEach(p => {
+                if (!visiblePlayers[p]) return;
+                const prog = calculatePlayerProgress(p), first = prog.firstIdx;
+                const vals = [], dispDates = [];
+                if (first !== -1) for (let i=first; i<dates.length; i++) { vals.push(getTeamSum(p,i)); dispDates.push(dates[i]); }
+                data.push({ player:p, tLast:playersData[p].T[lastIdx]||0, sumLast:getTeamSum(p,lastIdx),
+                    weeklyProgress:prog.weeklyGrowth, totalProgress:prog.totalGrowth,
+                    percentProgress:vals[0]>0?(prog.totalGrowth/vals[0]*100):0,
+                    sumValues:vals, displayDates:dispDates, firstIdx:first });
             });
             
             if (tableSort.column) {
-                playersDataForTable.sort((a, b) => {
-                    let valA, valB;
-                    switch(tableSort.column) {
-                        case 'titans': valA = a.tLast; valB = b.tLast; break;
-                        case 'sum': valA = a.sumLast; valB = b.sumLast; break;
-                        case 'weekly': valA = a.weeklyProgress; valB = b.weeklyProgress; break;
-                        case 'total': valA = a.totalProgress; valB = b.totalProgress; break;
-                        default: valA = 0; valB = 0;
-                    }
-                    return tableSort.direction === 'asc' ? valA - valB : valB - valA;
+                data.sort((a,b) => {
+                    const map = {titans:'tLast',sum:'sumLast',weekly:'weeklyProgress',total:'totalProgress'};
+                    const v = tableSort.direction==='asc' ? a[map[tableSort.column]]-b[map[tableSort.column]] : b[map[tableSort.column]]-a[map[tableSort.column]];
+                    return v;
                 });
             }
+            data = data.map((d,i)=>({...d,rank:i+1}));
             
-            playersDataForTable = playersDataForTable.map((p, idx) => ({...p, rank: idx + 1}));
-            
-            let html = '<table class="data-table"><thead><tr><th rowspan="2">' + t('rank') + ' Игрок</th>';
-            
-            dates.forEach(date => {
-                html += `<th colspan="2" style="text-align:center;">${date}</th>`;
-            });
-            
-            if (dates.length >= 2) {
-                html += `<th rowspan="2" class="sortable" style="background: #4A5568; cursor: pointer;" onclick="sortTable('weekly')">${t('weeklyProgress')}</th>`;
-            }
-            html += `<th rowspan="2" class="sortable" style="background: #4A5568; cursor: pointer;" onclick="sortTable('total')">${t('totalProgress')}</th>`;
-            
-            html += '</tr><tr>';
-            
-            dates.forEach(() => {
-                html += `<th class="sortable" style="cursor: pointer;" onclick="sortTable('titans')">Титаны</th>`;
-                html += `<th class="sortable" style="cursor: pointer;" onclick="sortTable('sum')">${t('sum')}</th>`;
-            });
+            let html = '<table class="data-table"><thead><tr><th rowspan="2">'+t('rank')+' Игрок</th>';
+            dates.forEach(d => html += `<th colspan="2" style="text-align:center">${d}</th>`);
+            if (dates.length>=2) html += `<th rowspan="2" class="sortable" onclick="sortTable('weekly')">${t('weeklyProgress')}</th>`;
+            html += `<th rowspan="2" class="sortable" onclick="sortTable('total')">${t('totalProgress')}</th></tr><tr>`;
+            dates.forEach(() => { html += `<th class="sortable" onclick="sortTable('titans')">Титаны</th><th class="sortable" onclick="sortTable('sum')">${t('sum')}</th>`; });
             html += '</tr></thead><tbody>';
             
-            document.querySelectorAll('.data-table th').forEach(th => {
-                th.classList.remove('sort-asc', 'sort-desc');
-            });
+            document.querySelectorAll('.data-table th').forEach(th => th.classList.remove('sort-asc','sort-desc'));
+            if (tableSort.column) {
+                document.querySelectorAll(`.data-table th[onclick*="${tableSort.column}"]`).forEach(th => th.classList.add(tableSort.direction==='asc'?'sort-asc':'sort-desc'));
+            }
             
-            playersDataForTable.forEach((playerData, playerIdx) => {
-                const player = playerData.player;
-                const isExpanded = expandedTableRows[player] || false;
-                
-                html += `<tr class="player-row ${isExpanded ? 'expanded' : ''}" onclick="toggleTableRow('${player}')">`;
-                html += `<td><span class="expand-icon ${isExpanded ? 'rotated' : ''}">▶</span><span class="rank-badge ${playerData.rank <= 3 ? 'rank-' + playerData.rank : ''}">${playerData.rank}</span><strong>${player}</strong></td>`;
-                
-                dates.forEach((_, idx) => {
-                    const tVal = playersData[player].T[idx] || 0;
-                    const sumVal = playerData.sumValues[idx];
-                    
-                    html += `<td>${tVal.toLocaleString('ru-RU')}</td>`;
-                    html += `<td>${sumVal.toLocaleString('ru-RU')}</td>`;
+            data.forEach(d => {
+                const p = d.player, first = d.firstIdx, exp = expandedTableRows[p]||false;
+                html += `<tr class="player-row ${exp?'expanded':''}" onclick="toggleTableRow('${p}')"><td><span class="expand-icon ${exp?'rotated':''}">▶</span><span class="rank-badge ${d.rank<=3?'rank-'+d.rank:''}">${d.rank}</span><strong>${p}</strong></td>`;
+                dates.forEach((_,i) => {
+                    if (first!==-1 && i<first) { html += '<td style="color:#666">—</td><td style="color:#666">—</td>'; }
+                    else { html += `<td>${(playersData[p].T[i]||0).toLocaleString()}</td><td>${getTeamSum(p,i).toLocaleString()}</td>`; }
                 });
-                
-                if (dates.length >= 2) {
-                    const sign = playerData.weeklyProgress >= 0 ? '+' : '';
-                    const className = playerData.weeklyProgress >= 0 ? 'positive' : 'negative';
-                    const percent = playerData.sumValues[prevIdx] > 0 ? (playerData.weeklyProgress / playerData.sumValues[prevIdx] * 100).toFixed(1) : 0;
-                    html += `<td class="col-weekly ${className}">${sign}${playerData.weeklyProgress.toLocaleString('ru-RU')} <span class="percentage">(${sign}${percent}%)</span>${createSparkline(playerData.sumValues.slice(-2))}</td>`;
+                if (dates.length>=2) {
+                    const sign = d.weeklyProgress>=0?'+':'', cls = d.weeklyProgress>=0?'positive':'negative',
+                          base = d.sumValues.length>1?d.sumValues[d.sumValues.length-2]:0,
+                          pct = base>0?(d.weeklyProgress/base*100).toFixed(1):0;
+                    html += `<td class="col-weekly ${cls}">${sign}${d.weeklyProgress.toLocaleString()} <span class="percentage">(${sign}${pct}%)</span></td>`;
                 }
-                
-                const sign = playerData.totalProgress >= 0 ? '+' : '';
-                const className = playerData.totalProgress >= 0 ? 'positive' : 'negative';
-                const percent = playerData.percentProgress.toFixed(1);
-                html += `<td class="col-total ${className}">${sign}${playerData.totalProgress.toLocaleString('ru-RU')} <span class="percentage">(${sign}${percent}%)</span>${createSparkline(playerData.sumValues)}</td>`;
-                
-                html += '</tr>';
-                
-                if (isExpanded) {
-                    ['k1', 'k2', 'k3'].forEach(team => {
-                        const teamName = t(team);
-                        html += `<tr class="detail-row">`;
-                        html += `<td>${teamName}</td>`;
-                        
-                        let lastTeamVal = 0;
-                        let prevTeamVal = 0;
-                        let firstTeamVal = 0;
-                        const teamValues = [];
-                        
-                        dates.forEach((_, dateIdx) => {
-                            const teamVal = playersData[player][team][dateIdx] || 0;
-                            teamValues.push(teamVal);
-                            
-                            if (dateIdx === lastIdx) lastTeamVal = teamVal;
-                            if (dateIdx === prevIdx) prevTeamVal = teamVal;
-                            if (dateIdx === firstIdx) firstTeamVal = teamVal;
-                            
-                            html += `<td class="empty-cell"></td>`;
-                            html += `<td>${teamVal.toLocaleString('ru-RU')}</td>`;
+                const sign = d.totalProgress>=0?'+':'', cls = d.totalProgress>=0?'positive':'negative', pct = d.percentProgress.toFixed(1);
+                html += `<td class="col-total ${cls}">${sign}${d.totalProgress.toLocaleString()} <span class="percentage">(${sign}${pct}%)</span></td></tr>`;
+                if (exp) {
+                    ['k1','k2','k3'].forEach(team => {
+                        html += `<tr class="detail-row"><td>${t(team)}</td>`;
+                        const tVals = [];
+                        dates.forEach((_,i) => {
+                            const v = playersData[p][team][i]||0; tVals.push(v);
+                            if (first!==-1 && i<first) { html += '<td style="color:#666">—</td><td style="color:#666">—</td>'; }
+                            else { html += `<td>—</td><td>${v.toLocaleString()}</td>`; }
                         });
-                        
-                        if (dates.length >= 2) {
-                            const weeklyTeamProgress = lastTeamVal - prevTeamVal;
-                            const sign = weeklyTeamProgress >= 0 ? '+' : '';
-                            const className = weeklyTeamProgress >= 0 ? 'positive' : 'negative';
-                            const percent = prevTeamVal > 0 ? (weeklyTeamProgress / prevTeamVal * 100).toFixed(1) : 0;
-                            html += `<td class="col-weekly ${className}">${sign}${weeklyTeamProgress.toLocaleString('ru-RU')} <span class="percentage">(${sign}${percent}%)</span></td>`;
+                        if (dates.length>=2) {
+                            const last = tVals[lastIdx]||0, prev = (first!==-1&&first<=prevIdx)?(tVals[prevIdx]||0):0,
+                                  wp = last-prev, sign = wp>=0?'+':'', cls = wp>=0?'positive':'negative',
+                                  pct = prev>0?(wp/prev*100).toFixed(1):0;
+                            html += `<td class="col-weekly ${cls}">${sign}${wp.toLocaleString()} <span class="percentage">(${sign}${pct}%)</span></td>`;
                         }
-                        
-                        const totalTeamProgress = lastTeamVal - firstTeamVal;
-                        const sign = totalTeamProgress >= 0 ? '+' : '';
-                        const className = totalTeamProgress >= 0 ? 'positive' : 'negative';
-                        const percent = firstTeamVal > 0 ? (totalTeamProgress / firstTeamVal * 100).toFixed(1) : 0;
-                        html += `<td class="col-total ${className}">${sign}${totalTeamProgress.toLocaleString('ru-RU')} <span class="percentage">(${sign}${percent}%)</span>${createSparkline(teamValues)}</td>`;
-                        
-                        html += '</tr>';
+                        const firstV = first!==-1?(tVals[first]||0):0, lastV = tVals[lastIdx]||0, tp = lastV-firstV,
+                              sign = tp>=0?'+':'', cls = tp>=0?'positive':'negative', pct = firstV>0?(tp/firstV*100).toFixed(1):0;
+                        html += `<td class="col-total ${cls}">${sign}${tp.toLocaleString()} <span class="percentage">(${sign}${pct}%)</span></td></tr>`;
                     });
                 }
             });
-            
             html += '</tbody></table>';
-            container.innerHTML = html;
-            
-            if (tableSort.column) {
-                const headers = document.querySelectorAll('.data-table th.sortable');
-                headers.forEach(th => {
-                    if (th.getAttribute('onclick') && th.getAttribute('onclick').includes(tableSort.column)) {
-                        th.classList.add(tableSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
-                    }
-                });
-            }
-        };
-        
-        const closeTable = (event) => {
-            if (!event || event.target.id === 'tableModal' || event.target.tagName === 'BUTTON') {
-                document.getElementById('tableModal').classList.remove('show');
-            }
+            document.getElementById('tableContainer').innerHTML = html;
         };
 
-        const getPlayerDataRange = (values) => {
-            if (!values || values.length === 0) return null;
-            
+        const toggleTableRow = p => { expandedTableRows[p] = !expandedTableRows[p]; renderTable(); };
+        const closeTable = e => { if (!e || e.target.id==='tableModal' || e.target.tagName==='BUTTON') document.getElementById('tableModal').classList.remove('show'); };
+
+        const getPlayerDataRange = values => {
+            if (!values?.length) return null;
             const offset = Math.max(0, dates.length - values.length);
-            
-            let firstNonZeroIdx = 0;
-            for (let i = 0; i < values.length; i++) {
-                if (values[i] !== 0) {
-                    firstNonZeroIdx = i;
-                    break;
-                }
-            }
-            
-            if (firstNonZeroIdx >= values.length - 1 && values[values.length - 1] === 0) {
-                return null;
-            }
-            
-            const startIdx = offset + firstNonZeroIdx;
-            const relevantDates = dates.slice(startIdx);
-            const relevantValues = values.slice(firstNonZeroIdx);
-            
-            const displayValues = [...relevantValues];
-            while (displayValues.length < relevantDates.length) {
-                displayValues.push(0);
-            }
-            
-            return { dates: relevantDates, values: displayValues };
+            let first = 0;
+            for (let i=0; i<values.length; i++) if (values[i]!==0) { first=i; break; }
+            if (first>=values.length-1 && values[values.length-1]===0) return null;
+            const start = offset+first, rDates = dates.slice(start), rVals = values.slice(first);
+            while (rVals.length < rDates.length) rVals.push(0);
+            return { dates:rDates, values:rVals };
         };
 
-        const createGraph = (divId, graphType) => {
-            const traces = [];
-            const allLeaders = [...new Set([...leadersData.growth.map(l => l.player), ...leadersData.titans.map(l => l.player)])];
-            const isTeamsGraph = graphType === 'teams';
-            
-            Object.keys(playersData).forEach(player => {
-                if (!visiblePlayers[player]) return;
-                
-                const color = playerColors[player];
-                const isLeader = allLeaders.includes(player);
-                const isExpanded = expandedPlayers[player];
-                
-                if (isTeamsGraph) {
-                    if (isExpanded) {
-                        const teams = ['k1', 'k2', 'k3'];
-                        teams.forEach((team, idx) => {
-                            const values = playersData[player][team];
-                            if (!values || values.length === 0) return;
-                            
-                            const range = getPlayerDataRange(values);
-                            if (!range) return;
-                            
-                            traces.push({
-                                x: range.dates,
-                                y: range.values,
-                                mode: 'lines+markers',
-                                name: player,
-                                legendgroup: player,
-                                showlegend: idx === 0,
-                                line: { color, width: 1.5, dash: 'solid' },
-                                marker: { size: 6 },
-                                hovertemplate: `<b>${player}</b><br>${team.toUpperCase()}<br>${range.values.map((v, i) => `${range.dates[i]}: ${v.toLocaleString('ru-RU')}`).join('<br>')}<extra></extra>`
-                            });
+        const createGraph = (divId, type) => {
+            const traces = [], leaders = new Set([...leadersData.growth.map(l=>l.player), ...leadersData.titans.map(l=>l.player)]);
+            Object.keys(playersData).forEach(p => {
+                if (!visiblePlayers[p]) return;
+                const color = playerColors[p], exp = expandedPlayers[p];
+                if (type==='teams') {
+                    if (exp) {
+                        ['k1','k2','k3'].forEach((team,i) => {
+                            const vals = playersData[p][team];
+                            if (!vals?.length) return;
+                            const r = getPlayerDataRange(vals);
+                            if (!r) return;
+                            traces.push({ x:r.dates, y:r.values, mode:'lines+markers', name:p, legendgroup:p, showlegend:i===0,
+                                line:{color,width:1.5}, marker:{size:5}, hovertemplate:`<b>${p}</b><br>${team.toUpperCase()}<br>${r.values.map((v,i)=>`${r.dates[i]}: ${v.toLocaleString()}`).join('<br>')}<extra></extra>` });
                         });
                     } else {
-                        const totalProgress = dates.map((_, idx) => 
-                            (playersData[player].k1[idx] || 0) + (playersData[player].k2[idx] || 0) + (playersData[player].k3[idx] || 0)
-                        );
-                        
-                        const range = getPlayerDataRange(totalProgress);
-                        if (!range) return;
-                        
-                        traces.push({
-                            x: range.dates,
-                            y: range.values,
-                            mode: 'lines+markers',
-                            name: player,
-                            legendgroup: player,
-                            showlegend: true,
-                            line: { color, width: 2, dash: 'solid' },
-                            marker: { size: 6 },
-                            hovertemplate: `<b>${player}</b><br>Общий прогресс (К1+К2+К3)<br>${range.values.map((v, i) => `${range.dates[i]}: ${v.toLocaleString('ru-RU')}`).join('<br>')}<extra></extra>`
-                        });
+                        const total = dates.map((_,i)=>getTeamSum(p,i));
+                        const r = getPlayerDataRange(total);
+                        if (!r) return;
+                        traces.push({ x:r.dates, y:r.values, mode:'lines+markers', name:p, legendgroup:p, showlegend:true,
+                            line:{color,width:2}, marker:{size:5}, hovertemplate:`<b>${p}</b><br>Total<br>${r.values.map((v,i)=>`${r.dates[i]}: ${v.toLocaleString()}`).join('<br>')}<extra></extra>` });
                     }
                 } else {
-                    const titansValues = playersData[player].T || [];
-                    if (!titansValues || titansValues.length === 0) return;
-                    
-                    const range = getPlayerDataRange(titansValues);
-                    if (!range) return;
-                    
-                    traces.push({
-                        x: range.dates,
-                        y: range.values,
-                        mode: 'lines+markers',
-                        name: player,
-                        legendgroup: player,
-                        showlegend: true,
-                        line: { color, width: 1.5, dash: 'dot' },
-                        marker: { size: 6 },
-                        hovertemplate: `<b>${player}</b><br>Титаны<br>${range.values.map((v, i) => `${range.dates[i]}: ${v.toLocaleString('ru-RU')}`).join('<br>')}<extra></extra>`
-                    });
+                    const vals = playersData[p].T||[];
+                    if (!vals?.length) return;
+                    const r = getPlayerDataRange(vals);
+                    if (!r) return;
+                    traces.push({ x:r.dates, y:r.values, mode:'lines+markers', name:p, legendgroup:p, showlegend:true,
+                        line:{color,width:1.5,dash:'dot'}, marker:{size:5}, hovertemplate:`<b>${p}</b><br>Titans<br>${r.values.map((v,i)=>`${r.dates[i]}: ${v.toLocaleString()}`).join('<br>')}<extra></extra>` });
                 }
             });
-            
-            const visibleCount = Object.values(visiblePlayers).filter(v => v).length;
-            const title = isTeamsGraph ? t('chartTitleTeams') : t('chartTitleTitans');
-            const xAxisTitle = currentLanguage === 'ru' ? 'Дата' : 'Date';
-            const yAxisTitle = currentLanguage === 'ru' ? 'Мощь' : 'Power';
-            
-            const layout = {
-                title: { text: `${title} (${visibleCount} ${t('shown')})`, font: { size: 14 } },
-                xaxis: { title: xAxisTitle, tickfont: { size: 10 } },
-                yaxis: { title: yAxisTitle, tickformat: ',.0f', rangemode: 'tozero' },
-                hovermode: 'closest', showlegend: true,
-                legend: { x: 1.02, y: 1, xanchor: 'left', yanchor: 'top', font: { size: 9 }, bgcolor: 'rgba(255,255,255,0.9)' },
-                margin: { l: 60, r: 10, t: 40, b: 40 },
-                paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)', autosize: true
-            };
-            
-            Plotly.newPlot(divId, traces, layout, { responsive: true });
+            const cnt = Object.values(visiblePlayers).filter(v=>v).length;
+            const title = type==='teams' ? t('chartTitleTeams') : t('chartTitleTitans');
+            Plotly.newPlot(divId, traces, {
+                title:{text:`${title} (${cnt} ${t('shown')})`,font:{size:12, color:'#F0F0F0'}, x:0.5, xanchor:'center'},
+                xaxis:{title:{text:currentLanguage==='ru'?'Дата':'Date', font:{color:'#B0B0B0'}},tickfont:{size:9, color:'#B0B0B0'}, gridcolor:'#5A5A5A', zerolinecolor:'#5A5A5A'},
+                yaxis:{title:{text:currentLanguage==='ru'?'Мощь':'Power', font:{color:'#B0B0B0'}},tickformat:',.0f',rangemode:'tozero', tickfont:{color:'#B0B0B0'}, gridcolor:'#5A5A5A', zerolinecolor:'#5A5A5A'},
+                hovermode:'closest', showlegend:true,
+                legend:{x:1.02,y:1,xanchor:'left',yanchor:'top',font:{size:8, color:'#F0F0F0'},bgcolor:'rgba(58,58,58,0.9)'},
+                margin:{l:50,r:10,t:35,b:35}, paper_bgcolor:'#4A4A4A', plot_bgcolor:'#4A4A4A', autosize:true,
+                font: { color: '#F0F0F0' }
+            }, {responsive:true});
         };
 
-        const createGraphs = () => {
-            createGraph('plotDivTeams', 'teams');
-            createGraph('plotDivTitans', 'titans');
-        };
+        const createGraphs = () => { createGraph('plotDivTeams','teams'); createGraph('plotDivTitans','titans'); };
 
         const downloadGraph = async (divId, filename) => {
             try {
-                const graphDiv = document.getElementById(divId);
-                
-                const originalPaperBg = graphDiv.layout.paper_bgcolor || 'rgba(0,0,0,0)';
-                const originalPlotBg = graphDiv.layout.plot_bgcolor || 'rgba(0,0,0,0)';
-                
-                await Plotly.relayout(graphDiv, {
-                    paper_bgcolor: 'white',
-                    plot_bgcolor: 'white'
+                const div = document.getElementById(divId);
+                const origPaper = div.layout.paper_bgcolor||'#4A4A4A', origPlot = div.layout.plot_bgcolor||'#4A4A4A';
+                await Plotly.relayout(div, {
+                    paper_bgcolor:'white',
+                    plot_bgcolor:'white',
+                    'title.font.color':'#333',
+                    'xaxis.title.font.color':'#333',
+                    'yaxis.title.font.color':'#333',
+                    'xaxis.tickfont.color':'#333',
+                    'yaxis.tickfont.color':'#333',
+                    'xaxis.gridcolor':'#ddd',
+                    'yaxis.gridcolor':'#ddd',
+                    'legend.font.color':'#333',
+                    'legend.bgcolor':'rgba(255,255,255,0.9)'
                 });
-                
-                const imgData = await Plotly.toImage(graphDiv, {
-                    format: 'png',
-                    width: graphDiv.clientWidth,
-                    height: graphDiv.clientHeight,
-                    scale: 2
+                const img = await Plotly.toImage(div, {format:'png',width:div.clientWidth,height:div.clientHeight,scale:2});
+                await Plotly.relayout(div, {
+                    paper_bgcolor:origPaper,
+                    plot_bgcolor:origPlot,
+                    'title.font.color':'#F0F0F0',
+                    'xaxis.title.font.color':'#B0B0B0',
+                    'yaxis.title.font.color':'#B0B0B0',
+                    'xaxis.tickfont.color':'#B0B0B0',
+                    'yaxis.tickfont.color':'#B0B0B0',
+                    'xaxis.gridcolor':'#5A5A5A',
+                    'yaxis.gridcolor':'#5A5A5A',
+                    'legend.font.color':'#F0F0F0',
+                    'legend.bgcolor':'rgba(58,58,58,0.9)'
                 });
-                
-                await Plotly.relayout(graphDiv, {
-                    paper_bgcolor: originalPaperBg,
-                    plot_bgcolor: originalPlotBg
-                });
-                
-                const link = document.createElement('a');
-                link.href = imgData;
-                link.download = `${filename}_${new Date().toISOString().slice(0,10)}.png`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-            } catch (error) {
-                console.error('Ошибка при выгрузке графика:', error);
-                alert('Не удалось выгрузить график. Попробуйте ещё раз.');
-            }
+                const a = document.createElement('a');
+                a.href = img; a.download = `${filename}_${new Date().toISOString().slice(0,10)}.png`;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            } catch(e) { alert('Ошибка выгрузки'); }
         };
 
         const updateStats = () => {
-            const playerCount = Object.values(visiblePlayers).filter(v => v).length;
-            
-            DOM.stats.innerHTML = `📊 ${t('shown')}: ${playerCount} ${t('from')} ${Object.keys(playersData).length} ${t('players')} | ${t('dates')}: ${dates.length}`;
+            const cnt = Object.values(visiblePlayers).filter(v=>v).length;
+            DOM.stats.innerHTML = `📊 ${t('shown')}: ${cnt} ${t('from')} ${Object.keys(playersData).length} ${t('players')} | ${t('dates')}: ${dates.length}`;
         };
 
-        const showAll = () => {
-            Object.keys(playersData).forEach(p => {
-                visiblePlayers[p] = true;
-                const checkbox = document.getElementById(`chk_${p}`);
-                if (checkbox) checkbox.checked = true;
-            });
-            createGraphs();
-            updateStats();
-        };
-
-        const hideAll = () => {
-            Object.keys(playersData).forEach(p => {
-                visiblePlayers[p] = false;
-                const checkbox = document.getElementById(`chk_${p}`);
-                if (checkbox) checkbox.checked = false;
-            });
-            createGraphs();
-            updateStats();
-        };
-
+        const showAll = () => { Object.keys(playersData).forEach(p=>{visiblePlayers[p]=true;const cb=document.getElementById(`chk_${p}`);if(cb)cb.checked=true}); createGraphs(); updateStats(); };
+        const hideAll = () => { Object.keys(playersData).forEach(p=>{visiblePlayers[p]=false;const cb=document.getElementById(`chk_${p}`);if(cb)cb.checked=false}); createGraphs(); updateStats(); };
         const showLeadersOnly = () => {
-            const allLeaders = [...new Set([...leadersData.growth.map(l => l.player), ...leadersData.titans.map(l => l.player)])];
-            Object.keys(playersData).forEach(p => {
-                const isVisible = allLeaders.includes(p);
-                visiblePlayers[p] = isVisible;
-                const checkbox = document.getElementById(`chk_${p}`);
-                if (checkbox) checkbox.checked = isVisible;
-            });
-            createGraphs();
-            updateStats();
+            const leaders = new Set([...leadersData.growth.map(l=>l.player), ...leadersData.titans.map(l=>l.player)]);
+            Object.keys(playersData).forEach(p=>{const v=leaders.has(p);visiblePlayers[p]=v;const cb=document.getElementById(`chk_${p}`);if(cb)cb.checked=v});
+            createGraphs(); updateStats();
+        };
+        const showTop = n => {
+            const totals = Object.keys(playersData).map(p=>({player:p,sum:getTeamSum(p,dates.length-1)})).sort((a,b)=>b.sum-a.sum).slice(0,n).map(t=>t.player);
+            Object.keys(playersData).forEach(p=>{const v=totals.includes(p);visiblePlayers[p]=v;const cb=document.getElementById(`chk_${p}`);if(cb)cb.checked=v});
+            createGraphs(); updateStats();
         };
 
-        const showTop = (n) => {
-            const totals = Object.keys(playersData).map(player => {
-                const data = playersData[player];
-                const lastIdx = dates.length - 1;
-                return { player, sum: (data.k1[lastIdx]||0) + (data.k2[lastIdx]||0) + (data.k3[lastIdx]||0) };
-            });
-            totals.sort((a,b) => b.sum - a.sum);
-            const topPlayers = totals.slice(0, n).map(t => t.player);
-            
-            Object.keys(playersData).forEach(p => {
-                const isVisible = topPlayers.includes(p);
-                visiblePlayers[p] = isVisible;
-                const checkbox = document.getElementById(`chk_${p}`);
-                if (checkbox) checkbox.checked = isVisible;
-            });
-            createGraphs();
-            updateStats();
-        };
-
-        window.onload = () => {
-            cacheDOM();
-            applyTranslations();
-            loadData(true);
-            setInterval(() => loadData(false), AUTO_REFRESH_MS);
-        };
-        
-        window.onresize = () => {
-            Plotly.Plots.resize(DOM.plotDivTeams);
-            Plotly.Plots.resize(DOM.plotDivTitans);
-        };
+        window.onload = () => { cacheDOM(); setLanguage(currentLanguage); loadData(true); setInterval(()=>loadData(false), AUTO_REFRESH_MS); };
+        window.onresize = () => { Plotly.Plots.resize(DOM.plotDivTeams); Plotly.Plots.resize(DOM.plotDivTitans); };
     </script>
 </body>
 </html>
