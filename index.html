@@ -345,12 +345,12 @@
         <div class="controls" id="controls" style="display: none;">
             <div class="filter-buttons">
                 <button class="btn-filter active" onclick="showAll()">✓ Все</button>
-                <button class="btn-filter" onclick="hideAll()"> Скрыть</button>
-                <button class="btn-filter" onclick="showLeadersOnly()"> Лидеры</button>
+                <button class="btn-filter" onclick="hideAll()">✗ Скрыть</button>
+                <button class="btn-filter" onclick="showLeadersOnly()">🏆 Лидеры</button>
                 <button class="btn-filter" onclick="showTop(10)">Топ-10</button>
                 <button class="btn-filter" onclick="showTop(5)">Топ-5</button>
-                <button class="btn-filter" onclick="expandAll()"> Развернуть</button>
-                <button class="btn-filter" onclick="collapseAll()">🔽 Свернуть</button>
+                <button class="btn-filter" onclick="expandAll()">🔼 Развернуть</button>
+                <button class="btn-filter" onclick="collapseAll()"> Свернуть</button>
                 <button class="btn-filter" onclick="showTable()">📊 Таблица</button>
             </div>
             <div class="checkbox-group" id="checkboxContainer"></div>
@@ -382,7 +382,7 @@
             </div>
             <div class="table-controls">
                 <button class="btn-filter" id="toggleAllTeamsBtn" onclick="toggleAllTeams()">📋 Все команды</button>
-                <button class="btn-filter" onclick="downloadTablePNG()">📄 PNG</button>
+                <button class="btn-filter" onclick="downloadTablePNG()"> PNG</button>
             </div>
             <div class="table-wrapper" id="tableWrapper">
                 <div id="tableContainer"></div>
@@ -611,13 +611,13 @@
                     <input type="checkbox" id="chk_${p}" ${visiblePlayers[p]!==false?'checked':''}>
                     <span class="color-box" style="background:${playerColors[p]}"></span>
                     <label for="chk_${p}" style="cursor:pointer;flex:1;color:#F0F0F0">${p}</label>
-                    <button class="expand-btn ${expandedPlayers[p]?'active':''}" onclick="toggleExpand('${p}',this)">${expandedPlayers[p]?'🔼':''}</button>
+                    <button class="expand-btn ${expandedPlayers[p]?'active':''}" onclick="toggleExpand('${p}',this)">${expandedPlayers[p]?'🔼':'🔽'}</button>
                 </div>`).join('');
         };
 
         const toggleExpand = (p, btn) => {
             expandedPlayers[p] = !expandedPlayers[p];
-            btn.textContent = expandedPlayers[p] ? '🔼' : '🔽';
+            btn.textContent = expandedPlayers[p] ? '🔼' : '';
             btn.classList.toggle('active', expandedPlayers[p]);
             createGraphs();
         };
@@ -638,17 +638,30 @@
             renderTable();
         };
 
-        // ИСПРАВЛЕННАЯ ФУНКЦИЯ: Явная установка inline стилей фона для мобильных
+        // ИСПРАВЛЕННАЯ ФУНКЦИЯ: Учёт прокрутки модального окна
         const downloadTablePNG = async () => {
             try {
                 const tableContainer = document.getElementById('tableContainer');
                 const tableWrapper = document.getElementById('tableWrapper');
+                const tableModal = document.getElementById('tableModal');
                 
                 const table = tableContainer.querySelector('.data-table');
                 if (!table) {
                     alert('Таблица пуста');
                     return;
                 }
+                
+                // Сохраняем оригинальные позиции прокрутки
+                const originalModalScrollTop = tableModal.scrollTop;
+                const originalModalScrollLeft = tableModal.scrollLeft;
+                const originalWrapperScrollTop = tableWrapper.scrollTop;
+                const originalWrapperScrollLeft = tableWrapper.scrollLeft;
+                
+                // Прокручиваем всё в начальное положение
+                tableModal.scrollTop = 0;
+                tableModal.scrollLeft = 0;
+                tableWrapper.scrollTop = 0;
+                tableWrapper.scrollLeft = 0;
                 
                 // Сохраняем оригинальные стили
                 const originalWrapperOverflow = tableWrapper.style.overflowX;
@@ -691,7 +704,7 @@
                 table.style.width = 'auto';
                 table.style.minWidth = 'auto';
                 
-                // Ждем применения стилей
+                // Ждем применения стилей и прокрутки
                 await new Promise(resolve => setTimeout(resolve, 300));
                 
                 // Получаем реальные размеры
@@ -704,13 +717,15 @@
                     return;
                 }
                 
-                // Делаем скриншот с foreignObjectRendering для лучшего рендеринга
+                // Делаем скриншот с явными координатами
                 const canvas = await html2canvas(table, {
                     backgroundColor: '#4A4A4A',
                     scale: 2,
                     useCORS: true,
                     scrollX: 0,
                     scrollY: 0,
+                    x: 0,
+                    y: 0,
                     windowWidth: realWidth,
                     windowHeight: realHeight,
                     logging: false,
@@ -719,7 +734,7 @@
                     removeContainer: true
                 });
                 
-                // Восстанавливаем оригинальные стили
+                // Восстанавливаем оригинальные стили и прокрутку
                 restoreStyles();
                 
                 const dataUrl = canvas.toDataURL('image/png');
@@ -727,6 +742,11 @@
                 downloadImage(dataUrl, filename);
                 
                 function restoreStyles() {
+                    tableModal.scrollTop = originalModalScrollTop;
+                    tableModal.scrollLeft = originalModalScrollLeft;
+                    tableWrapper.scrollTop = originalWrapperScrollTop;
+                    tableWrapper.scrollLeft = originalWrapperScrollLeft;
+                    
                     tableWrapper.style.overflowX = originalWrapperOverflow;
                     tableWrapper.style.width = originalWrapperWidth;
                     table.style.width = originalTableWidth;
