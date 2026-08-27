@@ -345,11 +345,11 @@
         <div class="controls" id="controls" style="display: none;">
             <div class="filter-buttons">
                 <button class="btn-filter active" onclick="showAll()">✓ Все</button>
-                <button class="btn-filter" onclick="hideAll()">✗ Скрыть</button>
-                <button class="btn-filter" onclick="showLeadersOnly()">🏆 Лидеры</button>
+                <button class="btn-filter" onclick="hideAll()"> Скрыть</button>
+                <button class="btn-filter" onclick="showLeadersOnly()"> Лидеры</button>
                 <button class="btn-filter" onclick="showTop(10)">Топ-10</button>
                 <button class="btn-filter" onclick="showTop(5)">Топ-5</button>
-                <button class="btn-filter" onclick="expandAll()">🔼 Развернуть</button>
+                <button class="btn-filter" onclick="expandAll()"> Развернуть</button>
                 <button class="btn-filter" onclick="collapseAll()">🔽 Свернуть</button>
                 <button class="btn-filter" onclick="showTable()">📊 Таблица</button>
             </div>
@@ -548,7 +548,7 @@
             } catch (err) {
                 console.error(err);
                 DOM.statusDot.className = 'status-dot error';
-                DOM.messageArea.innerHTML = `<div class="error-box"><strong>️ ${t('error')}:</strong> ${err.message}</div>`;
+                DOM.messageArea.innerHTML = `<div class="error-box"><strong>⚠️ ${t('error')}:</strong> ${err.message}</div>`;
             }
         };
 
@@ -611,13 +611,13 @@
                     <input type="checkbox" id="chk_${p}" ${visiblePlayers[p]!==false?'checked':''}>
                     <span class="color-box" style="background:${playerColors[p]}"></span>
                     <label for="chk_${p}" style="cursor:pointer;flex:1;color:#F0F0F0">${p}</label>
-                    <button class="expand-btn ${expandedPlayers[p]?'active':''}" onclick="toggleExpand('${p}',this)">${expandedPlayers[p]?'':''}</button>
+                    <button class="expand-btn ${expandedPlayers[p]?'active':''}" onclick="toggleExpand('${p}',this)">${expandedPlayers[p]?'':'🔽'}</button>
                 </div>`).join('');
         };
 
         const toggleExpand = (p, btn) => {
             expandedPlayers[p] = !expandedPlayers[p];
-            btn.textContent = expandedPlayers[p] ? '' : '🔽';
+            btn.textContent = expandedPlayers[p] ? '🔼' : '🔽';
             btn.classList.toggle('active', expandedPlayers[p]);
             createGraphs();
         };
@@ -638,14 +638,81 @@
             renderTable();
         };
 
+        // ИСПРАВЛЕННАЯ ФУНКЦИЯ: Универсальное скачивание для мобильных и десктоп
+        const downloadImage = (dataUrl, filename) => {
+            // Проверяем, мобильное ли устройство
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isMobile && navigator.share) {
+                // Для мобильных с поддержкой Web Share API - используем нативное меню "Поделиться"
+                fetch(dataUrl)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const file = new File([blob], filename, { type: 'image/png' });
+                        navigator.share({
+                            files: [file],
+                            title: 'Изображение',
+                            text: filename
+                        }).catch(() => {
+                            // Если share отменён, пробуем стандартный способ
+                            fallbackDownload(dataUrl, filename);
+                        });
+                    })
+                    .catch(() => fallbackDownload(dataUrl, filename));
+            } else {
+                // Для десктопа или мобильных без Web Share API
+                fallbackDownload(dataUrl, filename);
+            }
+        };
+
+        // Резервный метод скачивания
+        const fallbackDownload = (dataUrl, filename) => {
+            try {
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = filename;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                
+                // Для iOS Safari используем window.open как fallback
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                if (isIOS) {
+                    window.open(dataUrl, '_blank');
+                } else {
+                    link.click();
+                }
+                
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                }, 100);
+            } catch (e) {
+                console.error('Ошибка скачивания:', e);
+                alert('Не удалось скачать файл. Попробуйте открыть изображение в новой вкладке.');
+                window.open(dataUrl, '_blank');
+            }
+        };
+
         const downloadTablePNG = async () => {
             try {
-                const canvas = await html2canvas(document.getElementById('tableContainer'), {backgroundColor:'#fff',scale:2,useCORS:true,scrollX:0,scrollY:0,windowWidth:document.getElementById('tableContainer').scrollWidth,windowHeight:document.getElementById('tableContainer').scrollHeight});
-                const a = document.createElement('a');
-                a.download = `table_${new Date().toISOString().slice(0,10)}.png`;
-                a.href = canvas.toDataURL('image/png');
-                a.click();
-            } catch(e) { alert('Ошибка выгрузки'); }
+                const tableContainer = document.getElementById('tableContainer');
+                const canvas = await html2canvas(tableContainer, {
+                    backgroundColor: '#4A4A4A',
+                    scale: 2,
+                    useCORS: true,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: tableContainer.scrollWidth,
+                    windowHeight: tableContainer.scrollHeight,
+                    logging: false
+                });
+                
+                const dataUrl = canvas.toDataURL('image/png');
+                const filename = `table_${new Date().toISOString().slice(0,10)}.png`;
+                downloadImage(dataUrl, filename);
+            } catch(e) {
+                console.error('Ошибка выгрузки таблицы:', e);
+                alert('Ошибка выгрузки: ' + e.message);
+            }
         };
 
         const sortTable = col => {
@@ -789,10 +856,23 @@
 
         const createGraphs = () => { createGraph('plotDivTeams','teams'); createGraph('plotDivTitans','titans'); };
 
+        // ИСПРАВЛЕННАЯ ФУНКЦИЯ: Скачивание графиков с поддержкой мобильных
         const downloadGraph = async (divId, filename) => {
             try {
                 const div = document.getElementById(divId);
+                
+                // Проверяем размеры графика
+                const width = div.clientWidth || 800;
+                const height = div.clientHeight || 600;
+                
+                if (width === 0 || height === 0) {
+                    alert('График ещё не загружен. Подождите немного и попробуйте снова.');
+                    return;
+                }
+                
                 const origPaper = div.layout.paper_bgcolor||'#4A4A4A', origPlot = div.layout.plot_bgcolor||'#4A4A4A';
+                
+                // Меняем на белый фон для скачивания
                 await Plotly.relayout(div, {
                     paper_bgcolor:'white',
                     plot_bgcolor:'white',
@@ -806,7 +886,19 @@
                     'legend.font.color':'#333',
                     'legend.bgcolor':'rgba(255,255,255,0.9)'
                 });
-                const img = await Plotly.toImage(div, {format:'png',width:div.clientWidth,height:div.clientHeight,scale:2});
+                
+                // Ждём перерисовки
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                // Получаем изображение с фиксированными размерами для мобильных
+                const imgData = await Plotly.toImage(div, {
+                    format: 'png',
+                    width: Math.min(width * 2, 2000), // Ограничиваем максимальный размер
+                    height: Math.min(height * 2, 1500),
+                    scale: 2
+                });
+                
+                // Возвращаем серый фон
                 await Plotly.relayout(div, {
                     paper_bgcolor:origPaper,
                     plot_bgcolor:origPlot,
@@ -820,15 +912,18 @@
                     'legend.font.color':'#F0F0F0',
                     'legend.bgcolor':'rgba(58,58,58,0.9)'
                 });
-                const a = document.createElement('a');
-                a.href = img; a.download = `${filename}_${new Date().toISOString().slice(0,10)}.png`;
-                document.body.appendChild(a); a.click(); document.body.removeChild(a);
-            } catch(e) { alert('Ошибка выгрузки'); }
+                
+                const fullFilename = `${filename}_${new Date().toISOString().slice(0,10)}.png`;
+                downloadImage(imgData, fullFilename);
+            } catch(e) {
+                console.error('Ошибка выгрузки графика:', e);
+                alert('Ошибка выгрузки графика: ' + e.message);
+            }
         };
 
         const updateStats = () => {
             const cnt = Object.values(visiblePlayers).filter(v=>v).length;
-            DOM.stats.innerHTML = `📊 ${t('shown')}: ${cnt} ${t('from')} ${Object.keys(playersData).length} ${t('players')} | ${t('dates')}: ${dates.length}`;
+            DOM.stats.innerHTML = ` ${t('shown')}: ${cnt} ${t('from')} ${Object.keys(playersData).length} ${t('players')} | ${t('dates')}: ${dates.length}`;
         };
 
         const showAll = () => { Object.keys(playersData).forEach(p=>{visiblePlayers[p]=true;const cb=document.getElementById(`chk_${p}`);if(cb)cb.checked=true}); createGraphs(); updateStats(); };
