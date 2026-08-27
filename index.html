@@ -345,12 +345,12 @@
         <div class="controls" id="controls" style="display: none;">
             <div class="filter-buttons">
                 <button class="btn-filter active" onclick="showAll()">✓ Все</button>
-                <button class="btn-filter" onclick="hideAll()">✗ Скрыть</button>
-                <button class="btn-filter" onclick="showLeadersOnly()">🏆 Лидеры</button>
+                <button class="btn-filter" onclick="hideAll()"> Скрыть</button>
+                <button class="btn-filter" onclick="showLeadersOnly()"> Лидеры</button>
                 <button class="btn-filter" onclick="showTop(10)">Топ-10</button>
                 <button class="btn-filter" onclick="showTop(5)">Топ-5</button>
-                <button class="btn-filter" onclick="expandAll()">🔼 Развернуть</button>
-                <button class="btn-filter" onclick="collapseAll()"> Свернуть</button>
+                <button class="btn-filter" onclick="expandAll()"> Развернуть</button>
+                <button class="btn-filter" onclick="collapseAll()">🔽 Свернуть</button>
                 <button class="btn-filter" onclick="showTable()">📊 Таблица</button>
             </div>
             <div class="checkbox-group" id="checkboxContainer"></div>
@@ -381,8 +381,8 @@
                 <button class="btn-filter" onclick="closeTable()">✕ Закрыть</button>
             </div>
             <div class="table-controls">
-                <button class="btn-filter" id="toggleAllTeamsBtn" onclick="toggleAllTeams()"> Все команды</button>
-                <button class="btn-filter" onclick="downloadTablePNG()"> PNG</button>
+                <button class="btn-filter" id="toggleAllTeamsBtn" onclick="toggleAllTeams()">📋 Все команды</button>
+                <button class="btn-filter" onclick="downloadTablePNG()">📄 PNG</button>
             </div>
             <div class="table-wrapper" id="tableWrapper">
                 <div id="tableContainer"></div>
@@ -617,7 +617,7 @@
 
         const toggleExpand = (p, btn) => {
             expandedPlayers[p] = !expandedPlayers[p];
-            btn.textContent = expandedPlayers[p] ? '' : '🔽';
+            btn.textContent = expandedPlayers[p] ? '🔼' : '🔽';
             btn.classList.toggle('active', expandedPlayers[p]);
             createGraphs();
         };
@@ -638,7 +638,7 @@
             renderTable();
         };
 
-        // ИСПРАВЛЕННАЯ ФУНКЦИЯ: Временная модификация оригинальной таблицы
+        // ИСПРАВЛЕННАЯ ФУНКЦИЯ: Явная установка inline стилей фона для мобильных
         const downloadTablePNG = async () => {
             try {
                 const tableContainer = document.getElementById('tableContainer');
@@ -656,11 +656,33 @@
                 const originalTableWidth = table.style.width;
                 const originalTableMinWidth = table.style.minWidth;
                 
-                // Собираем все sticky элементы
-                const stickyElements = table.querySelectorAll('th, td');
-                const originalPositions = [];
-                stickyElements.forEach(el => {
-                    originalPositions.push(el.style.position);
+                // Собираем все элементы таблицы
+                const allElements = table.querySelectorAll('th, td, tr');
+                const originalStyles = [];
+                
+                // Сохраняем и устанавливаем явные inline стили фона
+                allElements.forEach(el => {
+                    const computedStyle = window.getComputedStyle(el);
+                    originalStyles.push({
+                        element: el,
+                        backgroundColor: el.style.backgroundColor,
+                        color: el.style.color,
+                        position: el.style.position
+                    });
+                    
+                    // Явно устанавливаем фон из computed styles
+                    const bgColor = computedStyle.backgroundColor;
+                    if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
+                        el.style.backgroundColor = bgColor;
+                    }
+                    
+                    const textColor = computedStyle.color;
+                    if (textColor) {
+                        el.style.color = textColor;
+                    }
+                    
+                    // Убираем sticky для скриншота
+                    el.style.position = 'static';
                 });
                 
                 // Временно модифицируем таблицу для скриншота
@@ -669,13 +691,8 @@
                 table.style.width = 'auto';
                 table.style.minWidth = 'auto';
                 
-                // Убираем sticky позиционирование
-                stickyElements.forEach(el => {
-                    el.style.position = 'static';
-                });
-                
                 // Ждем применения стилей
-                await new Promise(resolve => setTimeout(resolve, 200));
+                await new Promise(resolve => setTimeout(resolve, 300));
                 
                 // Получаем реальные размеры
                 const realWidth = table.scrollWidth;
@@ -687,7 +704,7 @@
                     return;
                 }
                 
-                // Делаем скриншот
+                // Делаем скриншот с foreignObjectRendering для лучшего рендеринга
                 const canvas = await html2canvas(table, {
                     backgroundColor: '#4A4A4A',
                     scale: 2,
@@ -697,7 +714,9 @@
                     windowWidth: realWidth,
                     windowHeight: realHeight,
                     logging: false,
-                    allowTaint: true
+                    allowTaint: true,
+                    foreignObjectRendering: true,
+                    removeContainer: true
                 });
                 
                 // Восстанавливаем оригинальные стили
@@ -713,8 +732,10 @@
                     table.style.width = originalTableWidth;
                     table.style.minWidth = originalTableMinWidth;
                     
-                    stickyElements.forEach((el, idx) => {
-                        el.style.position = originalPositions[idx];
+                    originalStyles.forEach(({element, backgroundColor, color, position}) => {
+                        element.style.backgroundColor = backgroundColor;
+                        element.style.color = color;
+                        element.style.position = position;
                     });
                 }
             } catch(e) {
@@ -960,7 +981,7 @@
 
         const updateStats = () => {
             const cnt = Object.values(visiblePlayers).filter(v=>v).length;
-            DOM.stats.innerHTML = ` ${t('shown')}: ${cnt} ${t('from')} ${Object.keys(playersData).length} ${t('players')} | ${t('dates')}: ${dates.length}`;
+            DOM.stats.innerHTML = `📊 ${t('shown')}: ${cnt} ${t('from')} ${Object.keys(playersData).length} ${t('players')} | ${t('dates')}: ${dates.length}`;
         };
 
         const showAll = () => { Object.keys(playersData).forEach(p=>{visiblePlayers[p]=true;const cb=document.getElementById(`chk_${p}`);if(cb)cb.checked=true}); createGraphs(); updateStats(); };
