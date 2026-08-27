@@ -297,6 +297,23 @@
         .rank-3 { background: #CD7F32; color: white; }
         .percentage { font-size: 7px; color: #B0B0B0; display: block; }
         
+        /* Стили для клона таблицы при скачивании */
+        .table-clone-container {
+            position: fixed;
+            top: -10000px;
+            left: -10000px;
+            visibility: hidden;
+            z-index: -1;
+        }
+        .table-clone-container .data-table th,
+        .table-clone-container .data-table td {
+            position: static !important;
+        }
+        .table-clone-container .data-table td:first-child,
+        .table-clone-container .data-table th:first-child {
+            position: static !important;
+        }
+        
         @media (min-width: 768px) {
             body { padding: 20px; }
             .container { padding: 20px; max-width: 1200px; }
@@ -349,7 +366,7 @@
                 <button class="btn-filter" onclick="showLeadersOnly()">🏆 Лидеры</button>
                 <button class="btn-filter" onclick="showTop(10)">Топ-10</button>
                 <button class="btn-filter" onclick="showTop(5)">Топ-5</button>
-                <button class="btn-filter" onclick="expandAll()"> Развернуть</button>
+                <button class="btn-filter" onclick="expandAll()">🔼 Развернуть</button>
                 <button class="btn-filter" onclick="collapseAll()">🔽 Свернуть</button>
                 <button class="btn-filter" onclick="showTable()">📊 Таблица</button>
             </div>
@@ -374,14 +391,17 @@
         </div>
     </div>
     
+    <!-- Контейнер для клона таблицы при скачивании -->
+    <div id="tableCloneContainer" class="table-clone-container"></div>
+    
     <div id="tableModal" class="table-modal" onclick="closeTable(event)">
         <div class="table-content" onclick="event.stopPropagation()">
             <div class="table-header">
-                <h2>📊 Таблица</h2>
+                <h2> Таблица</h2>
                 <button class="btn-filter" onclick="closeTable()">✕ Закрыть</button>
             </div>
             <div class="table-controls">
-                <button class="btn-filter" id="toggleAllTeamsBtn" onclick="toggleAllTeams()"> Все команды</button>
+                <button class="btn-filter" id="toggleAllTeamsBtn" onclick="toggleAllTeams()">📋 Все команды</button>
                 <button class="btn-filter" onclick="downloadTablePNG()">📄 PNG</button>
             </div>
             <div class="table-wrapper" id="tableWrapper">
@@ -411,11 +431,11 @@
                 sum:'Сумма', weeklyProgress:'Прогресс за неделю', totalProgress:'Прогресс', from:'из',
                 error:'Ошибка', failedLoad:'Не удалось загрузить данные', showAllTeams:'📋 Все команды', hideAllTeams:'✕ Скрыть', rank:'Место' },
             en: { refresh:'Refresh', updated:'Updated:', breakthroughTitle:'Heroic Breakthrough', titansTitle:'Titanic Breakthrough',
-                showAll:'✓ All', hideAll:'✗ Hide', leadersOnly:'🏆 Leaders', top10:'Top-10', top5:'Top-5',
+                showAll:'✓ All', hideAll:'✗ Hide', leadersOnly:' Leaders', top10:'Top-10', top5:'Top-5',
                 growthLabel:'K1+K2+K3:', titansLabel:'Titans:', chartTitleTeams:'Team Progress', chartTitleTitans:'Titans Progress',
                 shown:'shown', players:'players', dates:'Dates', teams:'Teams', k1:'K1', k2:'K2', k3:'K3',
                 sum:'Sum', weeklyProgress:'Weekly Progress', totalProgress:'Progress', from:'of',
-                error:'Error', failedLoad:'Failed to load', showAllTeams:'📋 All Teams', hideAllTeams:'✕ Hide', rank:'Rank' }
+                error:'Error', failedLoad:'Failed to load', showAllTeams:'📋 All Teams', hideAllTeams:' Hide', rank:'Rank' }
         };
         
         const t = key => translations[currentLanguage][key] || key;
@@ -548,7 +568,7 @@
             } catch (err) {
                 console.error(err);
                 DOM.statusDot.className = 'status-dot error';
-                DOM.messageArea.innerHTML = `<div class="error-box"><strong>⚠️ ${t('error')}:</strong> ${err.message}</div>`;
+                DOM.messageArea.innerHTML = `<div class="error-box"><strong>️ ${t('error')}:</strong> ${err.message}</div>`;
             }
         };
 
@@ -611,7 +631,7 @@
                     <input type="checkbox" id="chk_${p}" ${visiblePlayers[p]!==false?'checked':''}>
                     <span class="color-box" style="background:${playerColors[p]}"></span>
                     <label for="chk_${p}" style="cursor:pointer;flex:1;color:#F0F0F0">${p}</label>
-                    <button class="expand-btn ${expandedPlayers[p]?'active':''}" onclick="toggleExpand('${p}',this)">${expandedPlayers[p]?'🔼':'🔽'}</button>
+                    <button class="expand-btn ${expandedPlayers[p]?'active':''}" onclick="toggleExpand('${p}',this)">${expandedPlayers[p]?'':'🔽'}</button>
                 </div>`).join('');
         };
 
@@ -638,34 +658,50 @@
             renderTable();
         };
 
-        // ИСПРАВЛЕННАЯ ФУНКЦИЯ СКАЧИВАНИЯ ТАБЛИЦЫ
+        // ИСПРАВЛЕННАЯ ФУНКЦИЯ: Создание клона таблицы без sticky для корректного скриншота
         const downloadTablePNG = async () => {
             try {
                 const tableContainer = document.getElementById('tableContainer');
-                const tableWrapper = document.getElementById('tableWrapper');
+                const cloneContainer = document.getElementById('tableCloneContainer');
                 
-                // Получаем реальные размеры таблицы (включая прокручиваемую часть)
-                const realWidth = tableContainer.scrollWidth;
-                const realHeight = tableContainer.scrollHeight;
+                // Получаем HTML таблицы
+                const tableHTML = tableContainer.innerHTML;
                 
-                if (realWidth === 0 || realHeight === 0) {
+                if (!tableHTML || tableHTML.trim() === '') {
                     alert('Таблица пуста');
                     return;
                 }
                 
-                // Временно убираем ограничения overflow для корректного захвата
-                const originalWrapperOverflow = tableWrapper.style.overflowX;
-                const originalWrapperWidth = tableWrapper.style.width;
-                const originalContainerWidth = tableContainer.style.width;
+                // Создаем клон таблицы
+                cloneContainer.innerHTML = `<div style="background:#4A4A4A; padding:10px;">${tableHTML}</div>`;
+                const clonedTable = cloneContainer.querySelector('.data-table');
                 
-                tableWrapper.style.overflowX = 'visible';
-                tableWrapper.style.width = realWidth + 'px';
-                tableContainer.style.width = realWidth + 'px';
+                // Убираем все sticky позиционирования
+                const allCells = clonedTable.querySelectorAll('th, td');
+                allCells.forEach(cell => {
+                    cell.style.position = 'static';
+                });
+                
+                // Устанавливаем правильную ширину для клона
+                clonedTable.style.width = 'auto';
+                clonedTable.style.minWidth = 'auto';
+                clonedTable.style.display = 'table';
                 
                 // Ждем применения стилей
-                await new Promise(resolve => setTimeout(resolve, 100));
+                await new Promise(resolve => setTimeout(resolve, 200));
                 
-                const canvas = await html2canvas(tableContainer, {
+                // Получаем реальные размеры клона
+                const realWidth = clonedTable.scrollWidth;
+                const realHeight = clonedTable.scrollHeight;
+                
+                if (realWidth === 0 || realHeight === 0) {
+                    alert('Не удалось определить размеры таблицы');
+                    cloneContainer.innerHTML = '';
+                    return;
+                }
+                
+                // Делаем скриншот клона
+                const canvas = await html2canvas(clonedTable, {
                     backgroundColor: '#4A4A4A',
                     scale: 2,
                     useCORS: true,
@@ -674,13 +710,12 @@
                     windowWidth: realWidth,
                     windowHeight: realHeight,
                     logging: false,
-                    allowTaint: true
+                    allowTaint: true,
+                    foreignObjectRendering: false
                 });
                 
-                // Возвращаем оригинальные стили
-                tableWrapper.style.overflowX = originalWrapperOverflow;
-                tableWrapper.style.width = originalWrapperWidth;
-                tableContainer.style.width = originalContainerWidth;
+                // Очищаем клон
+                cloneContainer.innerHTML = '';
                 
                 const dataUrl = canvas.toDataURL('image/png');
                 const filename = `table_${new Date().toISOString().slice(0,10)}.png`;
@@ -688,6 +723,8 @@
             } catch(e) {
                 console.error('Ошибка выгрузки таблицы:', e);
                 alert('Ошибка выгрузки: ' + e.message);
+                // Очищаем клон в случае ошибки
+                document.getElementById('tableCloneContainer').innerHTML = '';
             }
         };
 
@@ -928,7 +965,7 @@
 
         const updateStats = () => {
             const cnt = Object.values(visiblePlayers).filter(v=>v).length;
-            DOM.stats.innerHTML = ` ${t('shown')}: ${cnt} ${t('from')} ${Object.keys(playersData).length} ${t('players')} | ${t('dates')}: ${dates.length}`;
+            DOM.stats.innerHTML = `📊 ${t('shown')}: ${cnt} ${t('from')} ${Object.keys(playersData).length} ${t('players')} | ${t('dates')}: ${dates.length}`;
         };
 
         const showAll = () => { Object.keys(playersData).forEach(p=>{visiblePlayers[p]=true;const cb=document.getElementById(`chk_${p}`);if(cb)cb.checked=true}); createGraphs(); updateStats(); };
